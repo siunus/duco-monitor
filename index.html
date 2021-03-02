@@ -356,7 +356,7 @@
 						request.setRequestHeader("X-Requested-With", navigator.userAgent);
 					},
 					dataType: "json",
-					url: "api.php"
+					url: "http://51.15.127.80/api.json"
 				})
 				.done(function(data) {
 					var statCPU = data["Server CPU usage"];
@@ -444,7 +444,7 @@
 						request.setRequestHeader("X-Requested-With", navigator.userAgent);
 					},
 					dataType: "json",
-					url: "balances.php"
+					url: "http://51.15.127.80/balances.json"
 				})
 				.done(function(data) {
 					var ctrBalance = data[username];
