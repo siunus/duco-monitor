@@ -357,7 +357,7 @@
 						request.setRequestHeader("X-Requested-With", navigator.userAgent);
 					},
 					dataType: "json",
-					url: "http://51.15.127.80/api.json"
+					url: "https://dev.siunusdev.com/duco/api.php"
 				})
 				.done(function(data) {
 					var statCPU = data["Server CPU usage"];
@@ -445,7 +445,7 @@
 						request.setRequestHeader("X-Requested-With", navigator.userAgent);
 					},
 					dataType: "json",
-					url: "http://51.15.127.80/balances.json"
+					url: "https://dev.siunusdev.com/duco/balances.php"
 				})
 				.done(function(data) {
 					var ctrBalance = data[username];
