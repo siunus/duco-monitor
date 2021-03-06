@@ -3,9 +3,9 @@
 	<head>
 		<meta charset='utf-8'/>
 		<meta http-equiv='X-UA-Compatible' content='IE=edge'/>
-		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
 		<title>DUCO Monitor | by siunusdev.com</title>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+		<link rel='shortcut icon' href='favicon.ico'/>
 		<link rel='stylesheet' href='plugins/bootstrap/dist/css/bootstrap.min.css'/>
 		<link rel='stylesheet' href='plugins/font-awesome/css/font-awesome.min.css'/>
 		<link rel='stylesheet' href='dist/css/AdminLTE.min.css'/>
@@ -34,7 +34,7 @@
 
 						<div class="collapse navbar-collapse pull-left" id="navbar-collapse">
 							<ul class="nav navbar-nav">
-								<li class="active"><a href="/">Monitor <span class="sr-only">(current)</span></a></li>
+								<li class="active"><a href="">Monitor <span class="sr-only">(current)</span></a></li>
 								<li><a href="https://revoxhere.github.io/duco-exchange/" target='_blank'>DUCO Exchange</a></li>
 								<li><a href="http://www.node-s.co.za/duco_exchange/home" target='_blank'>Node-S Exchange</a></li>
 							</ul>
@@ -122,7 +122,7 @@
 
 							<div class="col-md-3 col-sm-6 col-xs-12">
 								<div class="info-box">
-									<span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
+									<span class="info-box-icon bg-yellow"><i class="fa fa-money"></i></span>
 
 									<div class="info-box-content">
 										<span class="info-box-text">Estimated Profit</span>
@@ -136,7 +136,7 @@
 							<!-- /.col -->
 							<div class="col-md-3 col-sm-6 col-xs-12">
 								<div class="info-box">
-									<span class="info-box-icon bg-yellow"><i class="fa fa-money"></i></span>
+									<span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
 
 									<div class="info-box-content">
 										<span class="info-box-text">DUCO Balance</span>
@@ -154,21 +154,52 @@
 							<div class='col-md-12'>
 								<div class="box box-solid">
 									<div class="box-header with-border">
-										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Price Chart</h3>
+										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Price Change History</h3>
 									</div>
 									<div class="box-body">
-										<canvas id='priceChart' style='height:250px;width:100%;'></canvas>
+										<div class='row'>
+											<div class='col-md-10'></div>
+											<div class='col-md-2'>
+												<i class='fa fa-fw fa-caret-up text-green'></i> Max: <span id='price-max'>-</span><br/>
+												<i class='fa fa-fw fa-caret-down text-red'></i> Min: <span id='price-min'>-</span><br/>
+												<i class='fa fa-fw fa-arrows-h text-yellow'></i> Avg: <span id='price-avg'>-</span><br/>
+											</div>
+										</div>
+										<br/>
+										<canvas id='priceChart' style='height:200px;width:100%;'></canvas>
 									</div>
 								</div>
 							</div>
 						</div>
 						
 						<div class='row'>
-							<div class='col-md-6'>
+							<div class='col-md-12'>
+								<div class="box box-solid">
+									<div class="box-header with-border">
+										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Coins are Mined</h3>
+									</div>
+									<div class="box-body">
+										<div class='row'>
+											<div class='col-md-10'></div>
+											<div class='col-md-2'>
+												<i class='fa fa-fw fa-caret-up text-green'></i> Max: <span id='coins-max'>-</span><br/>
+												<i class='fa fa-fw fa-caret-down text-red'></i> Min: <span id='coins-min'>-</span><br/>
+												<i class='fa fa-fw fa-arrows-h text-yellow'></i> Avg: <span id='coins-avg'>-</span><br/>
+											</div>
+										</div>
+										<br/>
+										<canvas id='coinsChart' style='height:200px;width:100%;'></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class='row'>
+							<div class='col-md-12'>
 							
 								<div class="box box-solid">
 									<div class="box-header with-border">
-										<h3 class="box-title"><i class='fa fa-diamond fa-fw'></i> &nbsp;Miners</h3>
+										<h3 class="box-title"><i class='fa fa-diamond fa-fw'></i> &nbsp;My Miners</h3>
 									</div>
 									<!-- /.box-header -->
 									<div class="box-body table-responsive no-padding">
@@ -177,16 +208,21 @@
 												<tr>
 													<th width='20px'>#</th>
 													<th>Software</th>
+													<th>Sharetime</th>
 													<th>Accepted</th>
 													<th>Rejected</th>
 													<th>Hashrate</th>
 													<th>Diff</th>
+													<th>Identifier</th>
+													<th>Last Share Timestamp</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
 													<td></td>
 													<td>Loading...</td>
+													<td></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -200,6 +236,9 @@
 								<!-- /.box -->
 							
 							</div>
+						</div>
+						
+						<div class='row'>
 							<div class='col-md-6'>
 							
 								<div class="box box-solid">
@@ -228,7 +267,10 @@
 									</div>
 									<!-- /.footer -->
 								</div>
+							</div>
+								
 							
+							<div class='col-md-6'>
 								<div class="box box-solid">
 									<div class="box-header with-border">
 										<h3 class="box-title"><i class='fa fa-fw fa-retweet'></i> &nbsp;Last Transactions</h3>
@@ -285,12 +327,24 @@
 		<script src='plugins/chart.js/Chart.min.js'></script>
 		<script src='dist/js/adminlte.min.js'></script>
 		<script defer>
-			var username = "siunusdev"; // Set default duco username
-			var ducoPrice = 0;
-			var lastPrice = 0;
-			var lastBalance = 0;
-			var lastCounter = 0;
-			var isStopped = false;
+			let username = "siunusdev"; // Set default duco username
+			let ducoPrice = 0;
+			let lastPrice = 0;
+			let lastBalance = 0;
+			let lastCounter = 0;
+			let priceMax = 0;
+			let priceMin = 0;
+			let priceAvg = 0;
+			let coinsMined = 0;
+			let coinsMax = 0;
+			let coinsMin = 0;
+			let coinsAvg = 0;
+			let maxChartData = 15;
+			let priceDefaultLabel = [];
+			let priceDefaultValue = [];
+			let coinsDefaultLabel = [];
+			let coinsDefaultValue = [];
+			let isStopped = false;
 			
 			if(location.hash != "") {
 				username = location.hash.replaceAll("#", "");
@@ -308,10 +362,22 @@
 				getBalanceData();
 			}
 			
-			var chartConfig = {
+			if(window.innerWidth < 500) {
+				maxChartData = 10;
+			}
+			
+			for(i = 0; i < maxChartData; i++) {
+				priceDefaultLabel.push("--:--");
+				priceDefaultValue.push(0);
+				coinsDefaultLabel.push("--:--");
+				coinsDefaultValue.push(0);
+			}
+			
+			let chartPriceData = [];
+			let chartPriceConfig = {
 				type: 'line',
 				data: {
-					labels: ["-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-", "-:-"],
+					labels: priceDefaultLabel,
 					datasets: [
 						{
 							label: '$',
@@ -321,7 +387,7 @@
 							pointRadius : 1,
 							pointHoverRadius : 6,
 							pointHitRadius : 10,
-							data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+							data: priceDefaultValue
 						}
 					]
 				},
@@ -333,8 +399,37 @@
 				}
 			};
 
-			var chartContext = document.getElementById('priceChart').getContext('2d');
-			window.priceChart = new Chart(chartContext, chartConfig);
+			let chartPriceContext = document.getElementById('priceChart').getContext('2d');
+			window.priceChart = new Chart(chartPriceContext, chartPriceConfig);
+			
+			let chartCoinsData = [];
+			let chartCoinsConfig = {
+				type: 'line',
+				data: {
+					labels: coinsDefaultLabel,
+					datasets: [
+						{
+							label: 'ᕲ',
+							backgroundColor : 'rgba(0, 166, 90, 0.1)',
+							borderColor : '#00a65a',
+							borderWidth : 2,
+							pointRadius : 1,
+							pointHoverRadius : 6,
+							pointHitRadius : 10,
+							data: coinsDefaultValue
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					legend: {
+						display: false
+					}
+				}
+			};
+
+			let chartCoinsContext = document.getElementById('coinsChart').getContext('2d');
+			window.coinsChart = new Chart(chartCoinsContext, chartCoinsConfig);
 			
 			function setUsername(u) {
 				$('#duco-user').text(u);
@@ -349,10 +444,10 @@
 			}
 			
 			function setTimebar() {
-				var date = new Date();
-				var h = date.getHours();
-				var m = date.getMinutes();
-				var s = date.getSeconds();
+				let date = new Date();
+				let h = date.getHours();
+				let m = date.getMinutes();
+				let s = date.getSeconds();
 				
 				$('#time-bar').text(addZero(h) + ":" + addZero(m) + ":" + addZero(s));
 				
@@ -360,20 +455,127 @@
 			}
 			
 			function updatePriceChart(newLabel, newValue) {
-				var chartDataLen = chartConfig.data.datasets[0].data.length;
-				var chartDataLast = chartConfig.data.datasets[0].data[chartDataLen - 1];
+				let chartDataLen = chartPriceConfig.data.datasets[0].data.length;
+				let chartDataLast = chartPriceConfig.data.datasets[0].data[chartDataLen - 1];
 				
 				if(newValue != chartDataLast) {
-					chartConfig.data.labels.push(newLabel);
-					chartConfig.data.datasets[0].data.push(newValue);
+					chartPriceConfig.data.labels.push(newLabel);
+					chartPriceConfig.data.datasets[0].data.push(newValue);
+					chartPriceData.push(newValue);
 					
-					if(chartDataLen > 15) {
-						chartConfig.data.labels.shift();
-						chartConfig.data.datasets[0].data.shift();
+					if(chartDataLen >= maxChartData) {
+						chartPriceConfig.data.labels.shift();
+						chartPriceConfig.data.datasets[0].data.shift();
 					}
 					
 					window.priceChart.update();
 				}
+			}
+			
+			function updatePriceMinMax() {
+				if($('#price-max').text() == "-") {
+					priceMax = ducoPrice;
+				}
+				
+				if($('#price-min').text() == "-") {
+					priceMin = ducoPrice;
+				}
+				
+				if(ducoPrice > priceMax) {
+					priceMax = ducoPrice;
+				}
+				
+				if(ducoPrice < priceMin) {
+					priceMin = ducoPrice;
+				}
+				
+				$('#price-max').text(priceMax);
+				$('#price-min').text(priceMin);
+			}
+			
+			function updatePriceAverage() {
+				let sum = 0;
+				let div = 0;
+				let avg = 0;
+				
+				for(i in chartPriceData) {
+					let val = +chartPriceData[i];
+					sum += val;
+					
+					if(val != 0) {
+						div++;
+					}
+				}
+				
+				if(div != 0) {
+					avg = sum / div;
+					avg = avg.toFixed(6);
+					priceAvg = avg;
+				}
+				
+				$('#price-avg').text(avg);
+			}
+			
+			function updateCoinsChart(newLabel, newValue) {
+				let chartDataLen = chartCoinsConfig.data.datasets[0].data.length;
+				let chartDataLast = chartCoinsConfig.data.datasets[0].data[chartDataLen - 1];
+				
+				if(newValue != chartDataLast) {
+					chartCoinsConfig.data.labels.push(newLabel);
+					chartCoinsConfig.data.datasets[0].data.push(newValue);
+					chartCoinsData.push(newValue);
+					
+					if(chartDataLen >= maxChartData) {
+						chartCoinsConfig.data.labels.shift();
+						chartCoinsConfig.data.datasets[0].data.shift();
+					}
+					
+					window.coinsChart.update();
+				}
+			}
+			
+			function updateCoinsMinMax() {
+				if($('#coins-max').text() == "-") {
+					coinsMax = coinsMined;
+				}
+				
+				if($('#coins-min').text() == "-") {
+					coinsMin = coinsMined;
+				}
+				
+				if(coinsMined > coinsMax) {
+					coinsMax = coinsMined;
+				}
+				
+				if(coinsMined < coinsMin) {
+					coinsMin = coinsMined;
+				}
+				
+				$('#coins-max').text(coinsMax);
+				$('#coins-min').text(coinsMin);
+			}
+			
+			function updateCoinsAverage() {
+				let sum = 0;
+				let div = 0;
+				let avg = 0;
+				
+				for(i in chartCoinsData) {
+					let val = +chartCoinsData[i];
+					sum += val;
+					
+					if(val != 0) {
+						div++;
+					}
+				}
+				
+				if(div != 0) {
+					avg = sum / div;
+					avg = avg.toFixed(4);
+					coinsAvg = avg;
+				}
+				
+				$('#coins-avg').text(avg);
 			}
 			
 			function getJsonData() {				
@@ -383,20 +585,22 @@
 					// In api.php I just make a cURL to http://51.15.127.80/api.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
 				})
 				.done(function(data) {
-					var statCPU = data["Server CPU usage"];
-					var statRAM = data["Server RAM usage"];
-					var statConn = data["Active connections"];
-					var ctrWorker = data["Active workers"][username];
-					var ctrPrice = data["Duco price"];
-					var tblMiners = $('#tbl-miners tbody');
-					var tblTop10 = $('#tbl-top10 tbody');
-					var myMiners = [];
-					var date = new Date();
+					let statCPU = data["Server CPU usage"];
+					let statRAM = data["Server RAM usage"];
+					let statConn = data["Active connections"];
+					let ctrWorker = data["Active workers"][username];
+					let ctrPrice = data["Duco price"];
+					let tblMiners = $('#tbl-miners tbody');
+					let tblTop10 = $('#tbl-top10 tbody');
+					let date = new Date();
+					let myMiners = [];
 					
 					ctrPrice = ctrPrice.toFixed(6);
 					ducoPrice = ctrPrice;
 					
 					updatePriceChart(addZero(date.getHours()) + ":" + addZero(date.getMinutes()), ctrPrice);
+					updatePriceMinMax();
+					updatePriceAverage();
 					
 					$('#stat-cpu').text(statCPU + "%");
 					$('#stat-ram').text(statRAM + "%");
@@ -404,7 +608,7 @@
 					$('#counter-worker').text(ctrWorker);
 					$('#counter-price').html(ctrPrice + " <small>$</small>");
 					
-					var ctrPriceChange = (ctrPrice - lastPrice);
+					let ctrPriceChange = (ctrPrice - lastPrice);
 					if(ctrPriceChange != 0) {
 						if(ctrPriceChange != ctrPrice) {
 							if(ctrPriceChange > 0) {
@@ -426,13 +630,16 @@
 					
 					tblMiners.text('');
 					for(miner in myMiners) {
-						var tblHTML = "<tr>";
+						let tblHTML = "<tr>";
 						tblHTML = tblHTML + "<td>" + (+miner+1) + "</td>";
 						tblHTML = tblHTML + "<td>" + myMiners[miner]["Software"] + "</td>";
+						tblHTML = tblHTML + "<td class='text-info'>" + myMiners[miner]["Sharetime"] + "</td>";
 						tblHTML = tblHTML + "<td class='text-green'>" + myMiners[miner]["Accepted"] + "</td>";
 						tblHTML = tblHTML + "<td class='text-red'>" + myMiners[miner]["Rejected"] + "</td>";
 						tblHTML = tblHTML + "<td class='text-yellow'>" + myMiners[miner]["Hashrate"] + "</td>";
 						tblHTML = tblHTML + "<td>" + myMiners[miner]["Diff"] + "</td>";
+						tblHTML = tblHTML + "<td>" + myMiners[miner]["Identifier"] + "</td>";
+						tblHTML = tblHTML + "<td>" + myMiners[miner]["Last share timestamp"] + " UTC</td>";
 						tblHTML = tblHTML + "</tr>";
 						
 						tblMiners.append(tblHTML);
@@ -440,10 +647,10 @@
 					
 					tblTop10.text('');
 					for(position in data["Top 10 richest miners"]) {
-						var pos = data["Top 10 richest miners"][position].replaceAll("DUCO", "ᕲ").split("-");
-						var topBalance = pos[0].trim();
-						var topUsername = pos[1].trim();
-						var topWorkers = data["Active workers"][topUsername];
+						let pos = data["Top 10 richest miners"][position].replaceAll("DUCO", "ᕲ").split("-");
+						let topBalance = pos[0].trim();
+						let topUsername = pos[1].trim();
+						let topWorkers = data["Active workers"][topUsername];
 						
 						if(topWorkers == undefined) {
 							topWorkers = 0;
@@ -469,19 +676,28 @@
 					// In balances.php I just make a cURL to http://51.15.127.80/balances.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
 				})
 				.done(function(data) {
-					var ctrBalance = data[username];
-					var balanceStr = ctrBalance.split(" ");
-					var balance = +balanceStr[0];
-					var ctrDollar = balance * ducoPrice;
+					let ctrBalance = data[username];
+					let balanceStr = ctrBalance.split(" ");
+					let balance = +balanceStr[0];
+					let ctrDollar = balance * ducoPrice;
+					let date = new Date();
 					
 					$('#counter-balance').html(balance.toFixed(4) + " <small>ᕲ</small>");
 					$('#counter-dollar').text("~" + ctrDollar.toFixed(2) + " $");
 					
 					if(balance > lastBalance) {
-						var newCounter = new Date().getTime() / 1000;
-						var changedInSec = 3600 / (newCounter - lastCounter);
-						var estInHours = (balance - lastBalance) * changedInSec;
-						var ctrEstimated = estInHours * 24;
+						let newCounter = date.getTime() / 1000;
+						let changedInSec = 3600 / (newCounter - lastCounter);
+						let balChanged = (balance - lastBalance);
+						let estInHours =  balChanged * changedInSec;
+						let ctrEstimated = estInHours * 24;
+						
+						if(balChanged != balance) {
+							coinsMined = balChanged.toFixed(4);
+							updateCoinsChart(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()), balChanged.toFixed(6));
+							updateCoinsMinMax();
+							updateCoinsAverage();
+						}
 					
 						if(lastBalance == 0) {
 							$('#counter-estprofit').html("<small>Calculating...</small>");
@@ -510,8 +726,8 @@
 					// In transactions.php I just make a cURL to http://51.15.127.80/transactions.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
 				})
 				.done(function(data) {
-					var transactions = [];
-					var tblTransaction = $('#tbl-transactions tbody');
+					let transactions = [];
+					let tblTransaction = $('#tbl-transactions tbody');
 					
 					for(index in data) {
 						transactions.push(data[index]);
@@ -519,11 +735,11 @@
 					
 					tblTransaction.text('');
 					for(i = 1; i <=10; i++) {
-						var t = transactions[transactions.length - i];
-						var dateTime = t["Date"] + " - " + t["Time"];
-						var sender = t["Sender"];
-						var recipient = t["Recipient"];
-						var amount = t["Amount"];
+						let t = transactions[transactions.length - i];
+						let dateTime = t["Date"] + " - " + t["Time"];
+						let sender = t["Sender"];
+						let recipient = t["Recipient"];
+						let amount = t["Amount"];
 						
 						tblTransaction.append("<tr><td>" + i + "</td><td><small>" + dateTime + "</small></td><td><a href='#" + sender + "'>" + sender + "</a></td><td><a href='#" + recipient + "'>" + recipient + "</a></td><td>" + amount + "</td></tr>");
 					}
