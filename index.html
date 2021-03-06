@@ -110,7 +110,7 @@
 									<div class="info-box-content">
 										<span class="info-box-text">DUCO Price</span>
 										<span class="info-box-number"><span id='counter-price'>-</span></span>
-										<span class="info-box-text"><span id='counter-price-change'>-</span></span>
+										<span class="info-box-text"><span id='counter-price-change'></span></span>
 									</div>
 									<!-- /.info-box-content -->
 								</div>
@@ -221,6 +221,36 @@
 												<tr>
 													<td></td>
 													<td>Loading...</td>
+													<td></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.footer -->
+								</div>
+							
+								<div class="box box-solid">
+									<div class="box-header with-border">
+										<h3 class="box-title"><i class='fa fa-fw fa-retweet'></i> &nbsp;Last Transactions</h3>
+									</div>
+									<!-- /.box-header -->
+									<div class="box-body table-responsive no-padding">
+										<table class='table' id='tbl-transactions'>
+											<thead>
+												<tr>
+													<th width='20px'>#</th>
+													<th>Date/Time</th>
+													<th>Sender</th>
+													<th>Recipient</th>
+													<th>Amount</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td></td>
+													<td>Loading...</td>
+													<td></td>
+													<td></td>
 													<td></td>
 												</tr>
 											</tbody>
@@ -419,7 +449,7 @@
 							topWorkers = 0;
 						}
 						
-						tblTop10.append("<tr><td>" + (+position+1) + "</td><td>" + topBalance + "</td><td><a href='#" + topUsername + "'>" + topUsername + "</a></td><td>" + topWorkers + "</td></tr>");
+						tblTop10.append("<tr><td>" + (+position+1) + "</td><td>" + topBalance+ "</td><td><a href='#" + topUsername + "'>" + topUsername + "</a></td><td>" + topWorkers + "</td></tr>");
 					}
 				})
 				.fail(function(err) {
@@ -473,11 +503,47 @@
 				});
 			}
 			
+			function getTransactions() {
+				$.ajax({
+					dataType: "json",
+					url: "https://dev.siunusdev.com/duco/transactions.php" 
+					// In transactions.php I just make a cURL to http://51.15.127.80/transactions.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
+				})
+				.done(function(data) {
+					var transactions = [];
+					var tblTransaction = $('#tbl-transactions tbody');
+					
+					for(index in data) {
+						transactions.push(data[index]);
+					}
+					
+					tblTransaction.text('');
+					for(i = 1; i <=10; i++) {
+						var t = transactions[transactions.length - i];
+						var dateTime = t["Date"] + " - " + t["Time"];
+						var sender = t["Sender"];
+						var recipient = t["Recipient"];
+						var amount = t["Amount"];
+						
+						tblTransaction.append("<tr><td>" + i + "</td><td><small>" + dateTime + "</small></td><td><a href='#" + sender + "'>" + sender + "</a></td><td><a href='#" + recipient + "'>" + recipient + "</a></td><td>" + amount + "</td></tr>");
+					}
+				})
+				.fail(function(err) {
+					console.log('getTransactions', err);
+				})
+				.always(function() {
+					if(!isStopped) {
+						setTimeout(getTransactions, 60 * 1000);
+					}
+				});
+			}
+			
 			$(document).ready(function() {
 				setUsername(username);
 				setTimebar();
 				getJsonData();
 				getBalanceData();
+				getTransactions();
 			});
 			
 		</script>
