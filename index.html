@@ -581,8 +581,7 @@
 			function getJsonData() {				
 				$.ajax({
 					dataType: "json",
-					url: "https://dev.siunusdev.com/duco/api.php"
-					// In api.php I just make a cURL to http://51.15.127.80/api.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
+					url: "https://cors.bridged.cc/http://51.15.127.80/api.json"
 				})
 				.done(function(data) {
 					let statCPU = data["Server CPU usage"];
@@ -664,7 +663,7 @@
 				})
 				.always(function() {
 					if(!isStopped) {
-						setTimeout(getJsonData, 11000);
+						setTimeout(getJsonData, 5 * 1000);
 					}
 				});
 			}
@@ -672,8 +671,7 @@
 			function getBalanceData() {
 				$.ajax({
 					dataType: "json",
-					url: "https://dev.siunusdev.com/duco/balances.php" 
-					// In balances.php I just make a cURL to http://51.15.127.80/balances.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
+					url: "https://cors.bridged.cc/http://51.15.127.80/balances.json"
 				})
 				.done(function(data) {
 					let ctrBalance = data[username];
@@ -714,7 +712,7 @@
 				})
 				.always(function() {
 					if(!isStopped) {
-						setTimeout(getBalanceData, 5000);
+						setTimeout(getBalanceData, 5 * 1000);
 					}
 				});
 			}
@@ -722,8 +720,7 @@
 			function getTransactions() {
 				$.ajax({
 					dataType: "json",
-					url: "https://dev.siunusdev.com/duco/transactions.php" 
-					// In transactions.php I just make a cURL to http://51.15.127.80/transactions.json to solve CORS Issue and HTTP(S) Issue. Please use your own.
+					url: "https://cors.bridged.cc/http://51.15.127.80/transactions.json"
 				})
 				.done(function(data) {
 					let transactions = [];
@@ -749,7 +746,7 @@
 				})
 				.always(function() {
 					if(!isStopped) {
-						setTimeout(getTransactions, 60 * 1000);
+						setTimeout(getTransactions, 10 * 1000);
 					}
 				});
 			}
