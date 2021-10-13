@@ -363,6 +363,8 @@
 			
 			if(location.hash != "") {
 				username = location.hash.replaceAll("#", "");
+			} else {
+				location.hash = username;
 			}
 			
 			window.onhashchange = function() {
@@ -665,19 +667,20 @@
 			setTransations = function(transactions) {
 				table_transactions.text('');
 				
-				if(transactions.length == 0) {
+				if(transactions.length == 0 || typeof transactions != 'object') {
 					table_transactions.html("<tr><td></td><td colspan='5'>No transaction yet.</td></tr>");
 				}
-				
-				transactions.forEach(function(val, i) {
-					let dateTime = val["datetime"];
-					let sender = val["sender"];
-					let recipient = val["recipient"];
-					let amount = val["amount"];
-					let note = val["memo"];
-					
-					table_transactions.append("<tr><td>" + (i+1) + "</td><td><small>" + dateTime + "</small></td><td><a href='#" + sender + "'>" + sender + "</a></td><td><a href='#" + recipient + "'>" + recipient + "</a></td><td>" + amount + "</td><td>" + note + "</td></tr>");
-				});
+				else {
+					transactions.forEach(function(val, i) {
+						let dateTime = val["datetime"];
+						let sender = val["sender"];
+						let recipient = val["recipient"];
+						let amount = val["amount"];
+						let note = val["memo"];
+						
+						table_transactions.append("<tr><td>" + (i+1) + "</td><td><small>" + dateTime + "</small></td><td><a href='#" + sender + "'>" + sender + "</a></td><td><a href='#" + recipient + "'>" + recipient + "</a></td><td>" + amount + "</td><td>" + note + "</td></tr>");
+					});
+				}
 			}
 			
 			setTopMiners = function(data) {
