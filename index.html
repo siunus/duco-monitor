@@ -620,32 +620,33 @@
 				table_miners.find('tbody').text('');
 				table_miners.find('tfoot').text('');
 				
-				if(miners.length == 0) {
+				if(miners.length == 0 || typeof miners != 'object') {
 					table_miners.find('tbody').html("<tr><td></td><td colspan='8'>No active miner.</td></tr>");
 				}
-				
-				miners.forEach(function(miner, i) {
-					let tblHTML = "<tr>";
-					tblHTML += "<td>" + (+i+1) + "</td>";
-					tblHTML += "<td>" + miner["software"] + "</td>";
-					tblHTML += "<td>" + miner["algorithm"] + "</td>";
-					tblHTML += "<td class='text-info'>" + miner["sharetime"] + "</td>";
-					tblHTML += "<td class='text-green'>" + miner["accepted"] + "</td>";
-					tblHTML += "<td class='text-red'>" + miner["rejected"] + "</td>"; 	
-					tblHTML += "<td>" + hashrateConvert(miner["hashrate"]) + "</td>";
-					tblHTML += "<td>" + miner["diff"] + "</td>";
-					tblHTML += "<td>" + miner["identifier"] + "</td>";
-					tblHTML += "<td>" + miner["pool"] + "</td>";
-					tblHTML += "</tr>";
-					
-					table_miners.find('tbody').append(tblHTML);
-					
-					totalSharetime += miner['sharetime'];
-					totalAccepted += miner['accepted'];
-					totalRejected += miner['rejected'];
-					totalHashrate += miner['hashrate'];
-					totalDiff += miner['diff'];
-				});
+				else {
+					miners.forEach(function(miner, i) {
+						let tblHTML = "<tr>";
+						tblHTML += "<td>" + (+i+1) + "</td>";
+						tblHTML += "<td>" + miner["software"] + "</td>";
+						tblHTML += "<td>" + miner["algorithm"] + "</td>";
+						tblHTML += "<td class='text-info'>" + miner["sharetime"] + "</td>";
+						tblHTML += "<td class='text-green'>" + miner["accepted"] + "</td>";
+						tblHTML += "<td class='text-red'>" + miner["rejected"] + "</td>"; 	
+						tblHTML += "<td>" + hashrateConvert(miner["hashrate"]) + "</td>";
+						tblHTML += "<td>" + miner["diff"] + "</td>";
+						tblHTML += "<td>" + miner["identifier"] + "</td>";
+						tblHTML += "<td>" + miner["pool"] + "</td>";
+						tblHTML += "</tr>";
+						
+						table_miners.find('tbody').append(tblHTML);
+						
+						totalSharetime += miner['sharetime'];
+						totalAccepted += miner['accepted'];
+						totalRejected += miner['rejected'];
+						totalHashrate += miner['hashrate'];
+						totalDiff += miner['diff'];
+					});
+				}
 				
 				let tblHTML = "<tr>";
 				tblHTML += "<td></td>";
