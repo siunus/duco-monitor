@@ -47,15 +47,11 @@
 								</li>
 								
 								<li class="dropdown user user-menu">
-									<!-- Menu Toggle Button -->
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-										<!-- The user image in the navbar-->
 										<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-										<!-- hidden-xs hides the username on small devices so only the image appears. -->
 										<span class="hidden-xs" id="duco-user">&nbsp;</span>
 									</a>
 									<ul class="dropdown-menu">
-										<!-- The user image in the menu -->
 										<li class="user-header">
 											<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
@@ -67,9 +63,7 @@
 								</li>
 							</ul>
 						</div>
-						<!-- /.navbar-custom-menu -->
 					</div>
-					<!-- /.container-fluid -->
 				</nav>
 			</header>
 
@@ -190,21 +184,21 @@
 							</div>
 						</div>
 						
-						<div class='row' style='display:none'>
+						<div class='row'>
 							<div class='col-md-12'>
 								<div class="box box-solid">
 									<div class="box-header with-border">
 										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Coins are Mined</h3>
 									</div>
 									<div class="box-body">
-										<div class='row'>
+										<!--div class='row'>
 											<div class='col-md-10'></div>
 											<div class='col-md-2'>
 												<i class='fa fa-fw fa-caret-up text-green'></i> Max: <span id='coins-max'>-</span><br/>
 												<i class='fa fa-fw fa-caret-down text-red'></i> Min: <span id='coins-min'>-</span><br/>
 												<i class='fa fa-fw fa-arrows-h text-yellow'></i> Avg: <span id='coins-avg'>-</span><br/>
 											</div>
-										</div>
+										</div-->
 										<br/>
 										<canvas id='coinsChart' style='height:200px;width:100%;'></canvas>
 									</div>
@@ -321,7 +315,21 @@
 					</div>
 					<a href="https://www.siunusdev.com" title='My Website' target='_blank'>SIUNUSDEV</a> &nbsp;&middot;&nbsp; 
 					<a href="https://duinocoin.com" title='Duino-Coin' target='_blank'>Duinocoin.com</a> &nbsp;&middot;&nbsp; 
-					<a href="https://adminlte.io" title='Theme' target='_blank'>AdminLTE.io</a>
+					<a href="https://adminlte.io" title='Theme' target='_blank'>AdminLTE.io</a> &nbsp;&middot;&nbsp; 
+					
+					<!-- Default Statcounter code for Duco Monitor
+					https://siunus.github.io/duco-monitor/ -->
+					<script type="text/javascript">
+					var sc_project=12655032; 
+					var sc_invisible=0; 
+					var sc_security="f40e0cbb"; 
+					var scJsHost = "https://";
+					document.write("<sc"+"ript type='text/javascript' src='" +
+					scJsHost+
+					"statcounter.com/counter/counter.js'></"+"script>");
+					</script>
+					<noscript><span class="statcounter"><a title="Web Analytics" href="https://statcounter.com/" target="_blank"><img class="statcounter" src="https://c.statcounter.com/12655032/0/f40e0cbb/0/" alt="Web Analytics" referrerPolicy="no-referrer-when-downgrade"></a></span></noscript>
+					<!-- End of Statcounter Code -->
 				</div>
 			</footer>
 			
@@ -351,7 +359,7 @@
 			let intervalUserData, intervalServerInfo;
 			let workers, balance, lastBalance, lastBalanceChangeTime, ducoPrice, lastDucoPrice, ducoDollar;
 			let totalSharetime, totalAccepted, totalRejected, totalHashrate, totalDiff;
-			let maxChartData, priceData, chartPriceConfig;
+			let maxChartData, priceData, coinsData, chartPriceConfig, chartCoinsConfig;
 			
 			if(location.hash != "") {
 				username = location.hash.replaceAll("#", "");
@@ -369,8 +377,8 @@
 			
 			start = function() {
 				workers = balance = lastBalance = lastBalanceChangeTime = ducoPrice = lastDucoPrice = ducoDollar = 0;
+				priceData = coinsData = [];
 				maxChartData = 15;
-				priceData = [];
 				
 				clearTimeout(intervalUserData);
 				clearTimeout(intervalServerInfo);
@@ -394,6 +402,10 @@
 				
 				if(localStorage.getItem('priceData') != null) {
 					priceData = JSON.parse(localStorage.getItem('priceData'));
+				}
+				
+				if(localStorage.getItem('coinsData') != null) {
+					coinsData = JSON.parse(localStorage.getItem('coinsData'));
 				}
 			}
 
@@ -435,6 +447,7 @@
 						]
 					},
 					options: {
+						animation: false,
 						responsive: true,
 						legend: {
 							display: false
@@ -444,6 +457,37 @@
 
 				let chartPriceContext = document.getElementById('priceChart').getContext('2d');
 				window.priceChart = new Chart(chartPriceContext, chartPriceConfig);
+			}
+			
+			setCoinsChart = function() {
+				chartCoinsConfig = {
+					type: 'line',
+					data: {
+						labels: [],
+						datasets: [
+							{
+								label: 'ᕲ',
+								backgroundColor : 'rgba(0, 166, 90, 0.1)',
+								borderColor : '#00a65a',
+								borderWidth : 2,
+								pointRadius : 1,
+								pointHoverRadius : 6,
+								pointHitRadius : 10,
+								data: []
+							}
+						]
+					},
+					options: {
+						animation: false,
+						responsive: true,
+						legend: {
+							display: false
+						}
+					}
+				};
+
+				let chartCoinsContext = document.getElementById('coinsChart').getContext('2d');
+				window.coinsChart = new Chart(chartCoinsContext, chartCoinsConfig);
 			}
 			
 			hashrateConvert = function(val) {
@@ -501,9 +545,13 @@
 							
 							if(lastBalance == 0) {
 								counter_estprofit.html("<small>Calculating...</small>");
+								if(coinsData.length > 0) {
+									updateCoinsChart(coinsData);
+								}
 							} else {
 								counter_estprofit.html("~" + minedInDay.toFixed(8) + " <small>ᕲ</small>");
-							}
+								updateCoinsData(addZero(date.getHours()) + ":" + addZero(date.getMinutes()) + ":" + addZero(date.getSeconds()), +mined.toFixed(8));
+							}							
 							
 							lastBalanceChangeTime = date.getTime();
 							lastBalance = balance;
@@ -672,7 +720,6 @@
 			
 			updatePriceChart = function(data) {
 				let dataLabel = [], dataValue = [];
-				let sum = 0, div = 0, avg = 0;
 				
 				data.forEach(function(v, i) {
 					dataLabel.push(v.label);
@@ -721,14 +768,52 @@
 				$('#price-avg').text('$' + avg);
 			}
 			
+			updateCoinsData = function(newLabel, newValue) {
+				let maxData = maxChartData - coinsData.length;
+				let lastData = 0;
+				
+				if(coinsData.length > 0) {
+					lastData = coinsData[coinsData.length - 1].val;
+				}
+				
+				if(lastData != newValue) {
+					for(i = 0; i < maxData; i++) {
+						coinsData.push({label: '--:--', val: 0});
+					}
+					
+					coinsData.shift();
+					coinsData.push({label: newLabel, val: newValue});
+				}
+				
+				updateCoinsChart(coinsData);
+				//updatePriceMinMax(priceData);
+				//updatePriceAverage(priceData);
+				localStorage.setItem('coinsData', JSON.stringify(coinsData));
+			}
+			
+			updateCoinsChart = function(data) {
+				let dataLabel = [], dataValue = [];
+				
+				data.forEach(function(v, i) {
+					dataLabel.push(v.label);
+					dataValue.push(v.val);
+				});
+				
+				chartCoinsConfig.data.labels = dataLabel;
+				chartCoinsConfig.data.datasets[0].data = dataValue;
+				window.coinsChart.update();
+			}
+			
 			$(document).ready(function() {
 				start();
 				setTimebar();
 				setPriceChart();
+				setCoinsChart();
 				
 				getUserData();
 				getServerInfo();
 			});
 		</script>
+		
 	</body>
 </html>
