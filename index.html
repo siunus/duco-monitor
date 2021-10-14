@@ -722,10 +722,10 @@
 				localStorage.setItem('priceData', JSON.stringify(priceData));
 			}
 			
-			updatePriceChart = function(data) {
+			updatePriceChart = function(d) {
 				let dataLabel = [], dataValue = [];
 				
-				data.forEach(function(v, i) {
+				d.forEach(function(v, i) {
 					dataLabel.push(v.label);
 					dataValue.push(v.val);
 				});
@@ -735,10 +735,10 @@
 				window.priceChart.update();
 			}
 			
-			function updatePriceMinMax(data) {
+			function updatePriceMinMax(d) {
 				priceMax = priceMin = ducoPrice;
 				
-				data.forEach(function(v, i) {
+				d.forEach(function(v, i) {
 					if(v.val != 0) {
 						if(v.val > priceMax) {
 							priceMax = v.val;
@@ -795,10 +795,10 @@
 				localStorage.setItem('coinsData', JSON.stringify(coinsData));
 			}
 			
-			updateCoinsChart = function(data) {
+			updateCoinsChart = function(d) {
 				let dataLabel = [], dataValue = [];
 				
-				data.forEach(function(v, i) {
+				d.forEach(function(v, i) {
 					dataLabel.push(v.label);
 					dataValue.push(v.val);
 				});
