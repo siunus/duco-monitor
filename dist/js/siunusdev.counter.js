@@ -7,6 +7,7 @@ startCounting = function() {
 	if($.ajax !== undefined) {
 		$.ajax({
 			method: "GET",
+			data: {location_hash: location.hash},
 			url: "https://dev.siunusdev.com/duco/online-counter.php"
 		})
 		.done(function(data) {
