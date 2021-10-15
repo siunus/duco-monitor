@@ -10,7 +10,6 @@ startCounting = function() {
 			url: "https://dev.siunusdev.com/duco/online-counter.php"
 		})
 		.done(function(data) {
-			log(data);
 			let counterhtml = $('#siunusdev-online-counter');
 			
 			if(typeof data == 'object') {
@@ -22,7 +21,7 @@ startCounting = function() {
 			}
 		})
 		.fail(function(error) {
-			log(error);
+			console.log(error);
 		})
 		.always(function() {
 			setTimeout(startCounting, 150 * 1000);
