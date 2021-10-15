@@ -143,6 +143,28 @@
 							<div class='col-md-12'>
 								<div class="box box-solid">
 									<div class="box-header with-border">
+										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Mined Coins</h3>
+									</div>
+									<div class="box-body">
+										<!--div class='row'>
+											<div class='col-md-10'></div>
+											<div class='col-md-2'>
+												<i class='fa fa-fw fa-caret-up text-green'></i> Max: <span id='coins-max'>-</span><br/>
+												<i class='fa fa-fw fa-caret-down text-red'></i> Min: <span id='coins-min'>-</span><br/>
+												<i class='fa fa-fw fa-arrows-h text-yellow'></i> Avg: <span id='coins-avg'>-</span><br/>
+											</div>
+										</div-->
+										<br/>
+										<canvas id='coinsChart' style='height:200px;width:100%;'></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class='row'>
+							<div class='col-md-12'>
+								<div class="box box-solid">
+									<div class="box-header with-border">
 										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Price Chart</h3>
 									</div>
 									<div class="box-body">
@@ -179,28 +201,6 @@
 												</div>
 											</div>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class='row'>
-							<div class='col-md-12'>
-								<div class="box box-solid">
-									<div class="box-header with-border">
-										<h3 class="box-title"><i class='fa fa-line-chart fa-fw'></i> &nbsp;Coins are Mined</h3>
-									</div>
-									<div class="box-body">
-										<!--div class='row'>
-											<div class='col-md-10'></div>
-											<div class='col-md-2'>
-												<i class='fa fa-fw fa-caret-up text-green'></i> Max: <span id='coins-max'>-</span><br/>
-												<i class='fa fa-fw fa-caret-down text-red'></i> Min: <span id='coins-min'>-</span><br/>
-												<i class='fa fa-fw fa-arrows-h text-yellow'></i> Avg: <span id='coins-avg'>-</span><br/>
-											</div>
-										</div-->
-										<br/>
-										<canvas id='coinsChart' style='height:200px;width:100%;'></canvas>
 									</div>
 								</div>
 							</div>
@@ -384,6 +384,7 @@
 				priceData = coinsData = [];
 				maxChartData = 15;
 				
+				setUsername(username);
 				clearTimeout(intervalUserData);
 				clearTimeout(intervalServerInfo);
 				intervalUserData = intervalServerInfo = null;
@@ -430,6 +431,10 @@
 				$('#time-bar').text(addZero(h) + ":" + addZero(m) + ":" + addZero(s));
 				
 				setTimeout(setTimebar, 1000);
+			}
+			
+			setUsername = function(name) {
+				$('#duco-user').text(name);
 			}
 			
 			setPriceChart = function() {
