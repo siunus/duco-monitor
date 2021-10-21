@@ -1,5 +1,6 @@
 /* siunusdev.com 
 This script used for counting user(s) currently online on this website.
+Won't work with other domain.
 You can delete it if you want.
 */
 
@@ -25,7 +26,7 @@ startCounting = function() {
 			console.log(error);
 		})
 		.always(function() {
-			setTimeout(startCounting, 150 * 1000);
+			setTimeout(startCounting, 100 * 1000);
 		});
 	}
 }
