@@ -742,7 +742,7 @@
 				window.priceChart.update();
 			}
 			
-			function updatePriceMinMax(d) {
+			updatePriceMinMax = function(d) {
 				priceMax = priceMin = ducoPrice;
 				
 				d.forEach(function(v, i) {
@@ -760,7 +760,7 @@
 				$('#price-min').text('$' + priceMin);
 			}
 			
-			function updatePriceAverage(data) {
+			updatePriceAverage = function(data) {
 				let sum = 0, div = 0, avg = 0;
 				
 				data.forEach(function(v, i) {
