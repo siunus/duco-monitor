@@ -256,12 +256,12 @@ setBalanceHistory = function (balance) {
     const last1_key = Object.keys(history)[Object.keys(history).length - 1];
     const last1_val = history[last1_key];
 
-    const last2_key = Object.keys(history)[0];
+    const last2_key = Object.keys(history)[Math.max(0, Object.keys(history).length - 100)];
     const last2_val = history[last2_key];
 
     let balanceChangeTime = last1_key - last2_key;
     let mined = last1_val - last2_val;
-    let minedInSec = mined / balanceChangeTime;
+    let minedInSec = mined / (balanceChangeTime / 1000);
     let minedInHour = minedInSec * 3600;
     let minedInDay = minedInHour * 24;
 
