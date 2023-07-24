@@ -256,7 +256,7 @@ setBalanceHistory = function (balance) {
     const last1_key = Object.keys(history)[Object.keys(history).length - 1];
     const last1_val = history[last1_key];
 
-    const last2_key = Object.keys(history)[Math.max(0, Object.keys(history).length - 100)];
+    const last2_key = Object.keys(history)[Math.max(0, Object.keys(history).length - 360)];
     const last2_val = history[last2_key];
 
     let balanceChangeTime = last1_key - last2_key;
@@ -290,8 +290,8 @@ setBalanceHistory = function (balance) {
   updateIncomeChart(_incomeSeriesData, _incomeSeriesCategories);
 };
 
-compareByName = function(a, b) {
-  const nameA = a.software.toUpperCase(); // Convert names to uppercase to perform a case-insensitive sort
+sortMinerAsc = function(a, b) {
+  const nameA = a.software.toUpperCase();
   const nameB = b.software.toUpperCase();
 
   if (nameA < nameB) {
@@ -309,7 +309,7 @@ setMiners = function (miners) {
   const totalHashrate = $("#total-hashrate");
   const tableMiners = $("#table-miners");
 
-  const sortedMiners = miners.sort(compareByName);
+  const sortedMiners = miners.sort(sortMinerAsc);
 
   let hashrates = 0,
     accepted = 0,
