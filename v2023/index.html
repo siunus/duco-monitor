@@ -985,5 +985,22 @@
     <!-- Page JS -->
     <!-- <script src="assets/js/dashboards-analytics.js?v=1"></script> -->
     <script defer src="app.js?v=1"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+
+    <script defer>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDRjt1OPEW7QgXVBMvhZxkx2cC3jS4nshA",
+        authDomain: "duco-monitor-87864.firebaseapp.com",
+        projectId: "duco-monitor-87864",
+        storageBucket: "duco-monitor-87864.appspot.com",
+        messagingSenderId: "658029440521",
+        appId: "1:658029440521:web:8ea517e0e7f5803aa6d2d8",
+        measurementId: "G-ZTZK3WD5HG"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
   </body>
 </html>
