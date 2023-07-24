@@ -256,7 +256,7 @@ setBalanceHistory = function (balance) {
     const last1_key = Object.keys(history)[Object.keys(history).length - 1];
     const last1_val = history[last1_key];
 
-    const last2_key = Object.keys(history)[Object.keys(history).length - 2];
+    const last2_key = Object.keys(history)[0];
     const last2_val = history[last2_key];
 
     let balanceChangeTime = last1_key - last2_key;
@@ -328,7 +328,7 @@ setMiners = function (miners) {
   const percentage = (accepted / (accepted + rejected)) * 100;
 
   activeMinersCount.text(miners.length);
-  acceptedPercentage.text(`${percentage}% accepted`);
+  acceptedPercentage.text(`${percentage.toFixed(2)}% accepted`);
   totalHashrate.text(hashrateFormatted(hashrates));
 };
 
