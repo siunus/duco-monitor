@@ -290,11 +290,26 @@ setBalanceHistory = function (balance) {
   updateIncomeChart(_incomeSeriesData, _incomeSeriesCategories);
 };
 
+compareByName = function(a, b) {
+  const nameA = a.software.toUpperCase(); // Convert names to uppercase to perform a case-insensitive sort
+  const nameB = b.software.toUpperCase();
+
+  if (nameA < nameB) {
+    return -1;
+  } else if (nameA > nameB) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 setMiners = function (miners) {
   const activeMinersCount = $("#active-miners-count");
   const acceptedPercentage = $("#accepted-percentage");
   const totalHashrate = $("#total-hashrate");
   const tableMiners = $("#table-miners");
+
+  const sortedMiners = miners.sort(compareByName);
 
   let hashrates = 0,
     accepted = 0,
@@ -302,23 +317,23 @@ setMiners = function (miners) {
 
   let tableRows = "";
   let num = 0;
-  for (i in miners) {
+  for (i in sortedMiners) {
     num++;
     hashrates += miners[i].hashrate;
     accepted += miners[i].accepted;
     rejected += miners[i].rejected;
 
     tableRows += `<tr id="${miners[i].threadid}">
-            <th scope="row">${num}</th>
-            <td>${miners[i].software}</td>
-            <td>${miners[i].algorithm}</td>
-            <td class="text-success">${miners[i].accepted}</td>
-            <td class="text-danger">${miners[i].rejected}</td>
-            <td>${miners[i].hashrate} H/s</td>
-            <td>${miners[i].diff}</td>
-            <td>${miners[i].pool}</td>
-            <td>${miners[i].identifier}</td>
-          </tr>`;
+      <th scope="row">${num}</th>
+      <td><small>${miners[i].software}</small></td>
+      <td><small>${miners[i].identifier}</small></td>
+      <td class="text-success">${miners[i].accepted}</td>
+      <td class="text-danger">${miners[i].rejected}</td>
+      <td>${miners[i].hashrate} <span class="text-muted">H/s</span></td>
+      <td>${miners[i].diff}</td>
+      <td><small>${miners[i].pool}</small></td>
+      <td><small>${miners[i].algorithm}</small></td>
+    </tr>`;
   }
 
   if (tableRows != "") {
