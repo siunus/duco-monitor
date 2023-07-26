@@ -946,9 +946,10 @@ parseNews = function (html) {
       news.title != ""
         ? `<h5 class="card-title text-primary mb-4">${news.title}</h5>`
         : "";
-    const avatar = news.avatar != ""
-        ? `<img src="https://server.duinocoin.com/${news.avatar}" alt="" height="24" class="me-2 rounded-circle">`
-        : `<img src="https://duinocoin.com/assets/icons/duino.png" alt="" height="24" class="me-2 rounded-circle">`;
+    const avatar =
+      news.avatar != ""
+        ? `https://server.duinocoin.com/${news.avatar}`
+        : `https://duinocoin.com/assets/icons/duino.png`;
 
     newsHtml += `<div class="card mb-4">
             <div class="card-body">
@@ -956,7 +957,7 @@ parseNews = function (html) {
               <div class="card-subtitle text-muted mb-4">
                 <span class="d-flex">
                   <div class="d-flex align-items-center me-3">
-                    ${avatar}
+                  <img src="${avatar}" alt="" height="24" class="me-2 rounded-circle"/>
                     <span>${news.author}</span>
                   </div>
                   <span class="me-3">
