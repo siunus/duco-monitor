@@ -19,40 +19,10 @@ const monthText = [
   "Dec",
 ];
 
-const colors = [
-  config.colors.primary,
-  config.colors.secondary,
-  config.colors.success,
-  config.colors.danger,
-  config.colors.warning,
-  config.colors.info,
-  config.colors.dark,
-  config.colors.black,
-  "#E7E7FF",
-  "#EBEEF0",
-  "#E8FADF",
-  "#FFE0DB",
-  "#FFF2D6",
-  "#D7F5FC",
-  "#DCDFE1",
-];
-
+const colors = Object.values(config.colors);
 const lightColors = [
-  "#E7E7FF",
-  "#EBEEF0",
-  "#E8FADF",
-  "#FFE0DB",
-  "#FFF2D6",
-  "#D7F5FC",
-  "#DCDFE1",
-  config.colors.primary,
-  config.colors.secondary,
-  config.colors.success,
-  config.colors.danger,
-  config.colors.warning,
-  config.colors.info,
-  config.colors.dark,
-  config.colors.black,
+  ...Object.values(config.colors_label),
+  ...Object.values(config.colors),
 ];
 
 let cardColor, headingColor, axisColor, shadeColor, borderColor;
@@ -256,7 +226,8 @@ setBalanceHistory = function (balance) {
     const last1_key = Object.keys(history)[Object.keys(history).length - 1];
     const last1_val = history[last1_key];
 
-    const last2_key = Object.keys(history)[Math.max(0, Object.keys(history).length - 360)];
+    const last2_key =
+      Object.keys(history)[Math.max(0, Object.keys(history).length - 360)];
     const last2_val = history[last2_key];
 
     let balanceChangeTime = last1_key - last2_key;
@@ -290,7 +261,7 @@ setBalanceHistory = function (balance) {
   updateIncomeChart(_incomeSeriesData, _incomeSeriesCategories);
 };
 
-sortMinerAsc = function(a, b) {
+sortMinerAsc = function (a, b) {
   const nameA = a.software.toUpperCase();
   const nameB = b.software.toUpperCase();
 
@@ -301,7 +272,7 @@ sortMinerAsc = function(a, b) {
   } else {
     return 0;
   }
-}
+};
 
 setMiners = function (miners) {
   const activeMinersCount = $("#active-miners-count");
@@ -406,11 +377,17 @@ getStatistics = function () {
 setStatistics = function (data) {
   const ducoBalanceUSD = $("#duco-balance-usd");
 
-  priceUSD = data?.["Duco price"];
-  balanceUSD = balance * priceUSD;
-  ducoBalanceUSD.text(`~ $${balanceUSD.toFixed(2)}`);
+  if (
+    data?.["Duco price"] &&
+    data?.["Duco price"] != null &&
+    data?.["Duco price"] != undefined
+  ) {
+    priceUSD = data?.["Duco price"];
+    balanceUSD = balance * priceUSD;
+    ducoBalanceUSD.text(`~ $${balanceUSD.toFixed(2)}`);
+    setPriceUSDHistory(priceUSD);
+  }
 
-  setPriceUSDHistory(priceUSD);
   setMinerDist(data?.["Miner distribution"]);
   setTopRichest(data?.["Top 10 richest miners"]);
 };
@@ -547,9 +524,7 @@ setTopRichest = function (data) {
             <td>${num}</td>
             <td>
               <div class="d-flex align-items-center">
-                <img src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=${
-                  row[1]
-                }" alt="" height="24" class="me-2 rounded-circle">
+                <img src="https://api.dicebear.com/6.x/fun-emoji/svg?seed=${row[1]?.trim()}" alt="" height="24" class="me-2 rounded-circle"/>
                 <span>${row[1]}</span>
               </div>
             </td>
