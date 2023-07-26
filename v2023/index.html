@@ -531,14 +531,37 @@
               <div class="row">
                 <div class="col-12">
                   <div id="siunusdev-online-counter" class="mb-3">
-                    <div class="badge rounded-pill bg-warning">
+                    <div class="badge rounded-pill bg-dark" style="text-transform: none;">
                       Online:&nbsp;
-                      <span id="counter-online" class="fw-bolder">0</span>
+                      <span id="counter-online" class="fw-bolder">-</span>
                     </div>
-                    <div class="badge rounded-pill bg-warning">
+                    <div class="badge rounded-pill bg-dark" style="text-transform: none;">
                       Visitor:&nbsp;
-                      <span id="counter-visitor" class="fw-bolder">0</span>
+                      <span id="counter-visitor" class="fw-bolder">-</span>
                     </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <a
+                      href="https://bmc.link/siunusdev"
+                      target="_blank"
+                      class="btn btn-sm btn-dark fw-bolder"
+                    >
+                      Buy me a ☕
+                    </a> 
+                  </div>
+
+                  <div class="mb-3">
+                    <a
+                      class="github-button"
+                      href="https://github.com/siunus/duco-monitor"
+                      data-color-scheme="no-preference: light; light: light; dark: dark;"
+                      data-icon="octicon-star"
+                      data-size="large"
+                      data-show-count="true"
+                      aria-label="Star siunus/duco-monitor on GitHub"
+                      >Star</a
+                    >
                   </div>
                 </div>
               </div>
@@ -628,14 +651,6 @@
                     class="footer-link fw-bolder me-3 mb-2"
                     >SIUNUSDEV</a
                   >
-
-                  <a
-                    href="https://bmc.link/siunusdev"
-                    target="_blank"
-                    class="btn btn-sm btn-dark rounded-pill fw-bolder"
-                  >
-                    Buy me a ☕
-                  </a>
                 </div>
 
                 <div>
@@ -657,17 +672,9 @@
                   <a
                     href="https://themeselection.com/"
                     target="_blank"
-                    class="footer-link me-4 text-primary"
-                    >Theme Selection</a
+                    class="footer-link text-primary"
+                    >Sneat Theme</a
                   >
-
-                  <a
-                    href="https://github.com/siunus/duco-monitor"
-                    target="_blank"
-                    class="footer-link me-4 text-primary"
-                  >
-                    Github
-                  </a>
                 </div>
               </div>
             </footer>
@@ -700,10 +707,11 @@
 
     <!-- Page JS -->
     <script defer src="app.js?v=11"></script>
-    <script src="siunusdev.counter.js?v=5"></script>
+    <script defer async src="siunusdev.counter.js?v=5"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <script defer>
       const firebaseConfig = {
