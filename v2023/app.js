@@ -3,6 +3,7 @@ const DUCO_USERNAME = "duco_username";
 const DUCO_REST_API = "https://server.duinocoin.com";
 const BALANCE_HISTORY = "balance_history";
 const PRICE_USD_HISTORY = "price_usd_history";
+const REFRESH_INTERVAL = "refresh_interval";
 
 const monthText = [
   "Jan",
@@ -33,6 +34,8 @@ axisColor = config.colors.axisColor;
 borderColor = config.colors.borderColor;
 
 let username = localStorage.getItem(DUCO_USERNAME) ?? "siunusdev";
+let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 5;
+
 let balance = 0,
   balanceUSD = 0,
   priceUSD = 0;
@@ -114,6 +117,15 @@ hashrateFormatted = function (val) {
 };
 
 checkUsername = function (username, form = null) {
+  let submitButton = null;
+
+  if (form != null) {
+    submitButton = form.find('button[type="submit"]');
+    submitButton.text("Checking...");
+    submitButton.prop("disabled", true);
+    invalidInput(form.find("input.username"), null);
+  }
+
   $.ajax({
     method: "GET",
     url: `${DUCO_REST_API}/users/${username}`,
@@ -132,6 +144,12 @@ checkUsername = function (username, form = null) {
     })
     .fail(function (err) {
       console.error(err);
+    })
+    .always(function () {
+      if (submitButton != null) {
+        submitButton.text("Save changes");
+        submitButton.prop("disabled", false);
+      }
     });
 };
 
