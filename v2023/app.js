@@ -213,8 +213,8 @@ setBalance = function (balance) {
 
   balanceUSD = balance * priceUSD;
 
-  ducoBalance.text(`${DUCO} ${balance.toFixed(4)}`);
-  ducoBalanceUSD.text(`~ $${balanceUSD.toFixed(2)}`);
+  ducoBalance.html(`<span title="${balance}">${DUCO} ${balance.toFixed(4)}</span>`);
+  ducoBalanceUSD.html(`<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`);
 };
 
 setBalanceHistory = function (balance) {
@@ -254,7 +254,7 @@ setBalanceHistory = function (balance) {
     let minedInHour = minedInSec * 3600;
     let minedInDay = minedInHour * 24;
 
-    duco24hProfit.text(`ᕲ ${minedInDay.toFixed(4)}`);
+    duco24hProfit.html(`<span title="${minedInDay}">${DUCO} ${minedInDay.toFixed(4)}</span>`);
   }
 
   var _index = 0;
@@ -332,7 +332,7 @@ setMiners = function (miners) {
   const percentage = (accepted / (accepted + rejected)) * 100;
 
   activeMinersCount.text(miners.length);
-  acceptedPercentage.text(`${percentage.toFixed(2)}% accepted`);
+  acceptedPercentage.html(`<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`);
   totalHashrate.text(hashrateFormatted(hashrates));
 };
 
@@ -402,7 +402,7 @@ setStatistics = function (data) {
   ) {
     priceUSD = data?.["Duco price"];
     balanceUSD = balance * priceUSD;
-    ducoBalanceUSD.text(`~ $${balanceUSD.toFixed(2)}`);
+    ducoBalanceUSD.html(`<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`);
     setPriceUSDHistory(priceUSD);
   }
 
@@ -692,7 +692,7 @@ updateIncomeChart = function (series = [], categories = []) {
   incomeChart.updateOptions({
     series: [
       {
-        name: "ᕲ",
+        name: DUCO,
         data: series,
       },
     ],
