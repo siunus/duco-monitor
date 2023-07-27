@@ -213,8 +213,12 @@ setBalance = function (balance) {
 
   balanceUSD = balance * priceUSD;
 
-  ducoBalance.html(`<span title="${balance}">${DUCO} ${balance.toFixed(4)}</span>`);
-  ducoBalanceUSD.html(`<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`);
+  ducoBalance.html(
+    `<span title="${balance}">${DUCO} ${balance.toFixed(4)}</span>`
+  );
+  ducoBalanceUSD.html(
+    `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`
+  );
 };
 
 setBalanceHistory = function (balance) {
@@ -254,7 +258,9 @@ setBalanceHistory = function (balance) {
     let minedInHour = minedInSec * 3600;
     let minedInDay = minedInHour * 24;
 
-    duco24hProfit.html(`<span title="${minedInDay}">${DUCO} ${minedInDay.toFixed(4)}</span>`);
+    duco24hProfit.html(
+      `<span title="${minedInDay}">${DUCO} ${minedInDay.toFixed(4)}</span>`
+    );
   }
 
   var _index = 0;
@@ -318,7 +324,7 @@ setMiners = function (miners) {
       <td><small>${miners[i].identifier}</small></td>
       <td class="text-success">${miners[i].accepted}</td>
       <td class="text-danger">${miners[i].rejected}</td>
-      <td>${miners[i].hashrate} <span class="text-muted">H/s</span></td>
+      <td>${hashrateFormatted(miners[i].hashrate)}</td>
       <td>${miners[i].diff}</td>
       <td><small>${miners[i].pool}</small></td>
       <td><small>${miners[i].algorithm}</small></td>
@@ -327,12 +333,20 @@ setMiners = function (miners) {
 
   if (tableRows != "") {
     tableMiners.find("tbody").html(tableRows);
+  } else {
+    tableMiners.find("tbody").html(`<tr>
+      <td colspan="9" align="center" class="border-0">
+        <div class="p-5">No active miner.</div>
+      </td>
+    </tr>`);
   }
 
   const percentage = (accepted / (accepted + rejected)) * 100;
 
   activeMinersCount.text(miners.length);
-  acceptedPercentage.html(`<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`);
+  acceptedPercentage.html(
+    `<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`
+  );
   totalHashrate.text(hashrateFormatted(hashrates));
 };
 
@@ -402,7 +416,9 @@ setStatistics = function (data) {
   ) {
     priceUSD = data?.["Duco price"];
     balanceUSD = balance * priceUSD;
-    ducoBalanceUSD.html(`<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`);
+    ducoBalanceUSD.html(
+      `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`
+    );
     setPriceUSDHistory(priceUSD);
   }
 
