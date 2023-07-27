@@ -308,7 +308,8 @@ setMiners = function (miners) {
 
   let hashrates = 0,
     accepted = 0,
-    rejected = 0;
+    rejected = 0,
+    percentage = 0;
 
   let tableRows = "";
   let num = 0;
@@ -341,7 +342,9 @@ setMiners = function (miners) {
     </tr>`);
   }
 
-  const percentage = (accepted / (accepted + rejected)) * 100;
+  if(miners.length > 0) {
+    percentage = (accepted / (accepted + rejected)) * 100;
+  }
 
   activeMinersCount.text(miners.length);
   acceptedPercentage.html(
