@@ -4,6 +4,7 @@ const DUCO_REST_API = "https://server.duinocoin.com";
 const BALANCE_HISTORY = "balance_history";
 const PRICE_USD_HISTORY = "price_usd_history";
 const REFRESH_INTERVAL = "refresh_interval";
+const DEFAULT_THEME = "default_theme";
 
 const monthText = [
   "Jan",
@@ -26,12 +27,11 @@ const lightColors = [
   ...Object.values(config.colors),
 ];
 
-let cardColor, headingColor, axisColor, shadeColor, borderColor;
-
-cardColor = config.colors.white;
-headingColor = config.colors.headingColor;
-axisColor = config.colors.axisColor;
-borderColor = config.colors.borderColor;
+let cardColor = config.colors.white,
+  headingColor = config.colors.headingColor,
+  axisColor = config.colors.axisColor,
+  borderColor = config.colors.borderColor,
+  shadeColor;
 
 let username = localStorage.getItem(DUCO_USERNAME) ?? "siunusdev";
 let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 5;
@@ -41,6 +41,7 @@ let balance = 0,
   priceUSD = 0;
 
 $(document).ready(() => {
+  checkTheme();
   setUsername(username);
   console.log("Ready", getUsername());
 
@@ -114,6 +115,16 @@ hashrateFormatted = function (val) {
   }
 
   return hashrate.toFixed(2) + hashrate_unit;
+};
+
+getUrlParam = function (name) {
+  var results = new RegExp("[?&]" + name + "=([^&#]*)").exec(
+    window.location.href
+  );
+  if (results == null) {
+    return null;
+  }
+  return decodeURI(results[1]) || 0;
 };
 
 checkUsername = function (username, form = null) {
@@ -342,7 +353,7 @@ setMiners = function (miners) {
     </tr>`);
   }
 
-  if(miners.length > 0) {
+  if (miners.length > 0) {
     percentage = (accepted / (accepted + rejected)) * 100;
   }
 
@@ -718,6 +729,9 @@ updateIncomeChart = function (series = [], categories = []) {
     xaxis: {
       categories: categories,
     },
+    grid: {
+      borderColor: borderColor,
+    },
   });
 };
 
@@ -1012,4 +1026,66 @@ parseNews = function (html) {
   if (newsHtml != "") {
     listNews.html(newsHtml);
   }
+};
+
+toggleTheme = function () {
+  const defaultTheme = localStorage.getItem(DEFAULT_THEME) ?? "light";
+  const coreCss = $(".template-customizer-core-css");
+  const themeCss = $(".template-customizer-theme-css");
+
+  if (defaultTheme == "light") {
+    // coreCss.attr('href', 'assets/vendor/css/new/core-dark.css');
+    // themeCss.attr('href', 'assets/vendor/css/new/theme-default-dark.css');
+    // cardColor = config.colors_dark.white;
+    // headingColor = config.colors_dark.headingColor;
+    // axisColor = config.colors_dark.axisColor;
+    // borderColor = config.colors_dark.borderColor;
+    localStorage.setItem(DEFAULT_THEME, "dark");
+  } else {
+    // coreCss.attr('href', 'assets/vendor/css/new/core.css');
+    // themeCss.attr('href', 'assets/vendor/css/new/theme-default.css');
+    // cardColor = config.colors.white;
+    // headingColor = config.colors.headingColor;
+    // axisColor = config.colors.axisColor;
+    // borderColor = config.colors.borderColor;
+    localStorage.setItem(DEFAULT_THEME, "light");
+  }
+
+  checkTheme();
+};
+
+checkTheme = function () {
+  const defaultTheme = localStorage.getItem(DEFAULT_THEME) ?? "light";
+  const coreCss = $(".template-customizer-core-css");
+  const themeCss = $(".template-customizer-theme-css");
+  const themeToggle = $(".theme-toggle");
+
+  if (defaultTheme == "light") {
+    coreCss.attr("href", "assets/vendor/css/new/core.css");
+    themeCss.attr("href", "assets/vendor/css/new/theme-default.css");
+    cardColor = config.colors.cardColor;
+    headingColor = config.colors.headingColor;
+    borderColor = config.colors.borderColor;
+    themeToggle.html(`<i class="bx bx-moon"></i>`);
+  } else {
+    coreCss.attr("href", "assets/vendor/css/new/core-dark.css");
+    themeCss.attr("href", "assets/vendor/css/new/theme-default-dark.css");
+    cardColor = config.colors_dark.cardColor;
+    headingColor = config.colors_dark.headingColor;
+    borderColor = config.colors_dark.borderColor;
+    themeToggle.html(`<i class="bx bx-sun"></i>`);
+  }
+  
+  incomeChart.updateOptions({
+    grid: {
+      borderColor: borderColor,
+    },
+  });
+
+  minerDistChart.updateOptions({
+    stroke: {
+      width: 5,
+      colors: [cardColor],
+    },
+  })
 };

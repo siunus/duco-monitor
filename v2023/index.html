@@ -43,12 +43,12 @@
     <!-- Core CSS -->
     <link
       rel="stylesheet"
-      href="assets/vendor/css/core.css"
+      href="assets/vendor/css/new/core.css"
       class="template-customizer-core-css"
     />
     <link
       rel="stylesheet"
-      href="assets/vendor/css/theme-default.css"
+      href="assets/vendor/css/new/theme-default.css"
       class="template-customizer-theme-css"
     />
     <link rel="stylesheet" href="assets/css/demo.css" />
@@ -74,7 +74,7 @@
     <script src="assets/js/config.js"></script>
   </head>
 
-  <body>
+  <body class="dark-theme">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar layout-without-menu">
       <div class="layout-container">
@@ -122,6 +122,14 @@
                             aria-controls="offcanvasNews"
                           >
                             <i class="bx bx-news"></i> News
+                          </button>
+
+                          <button
+                            class="btn btn-sm btn-outline-primary mb-1 theme-toggle"
+                            type="button"
+                            onclick="toggleTheme()"
+                          >
+                            <i class="bx bx-moon"></i>
                           </button>
 
                           <form class="form-change-username">
@@ -536,11 +544,17 @@
               <div class="row">
                 <div class="col-12">
                   <div id="siunusdev-online-counter" class="mb-3">
-                    <div class="badge rounded-pill bg-dark" style="text-transform: none;">
+                    <div
+                      class="badge rounded-pill bg-dark"
+                      style="text-transform: none"
+                    >
                       Online:&nbsp;
                       <span id="counter-online" class="fw-bolder">-</span>
                     </div>
-                    <div class="badge rounded-pill bg-dark" style="text-transform: none;">
+                    <div
+                      class="badge rounded-pill bg-dark"
+                      style="text-transform: none"
+                    >
                       Visitor:&nbsp;
                       <span id="counter-visitor" class="fw-bolder">-</span>
                     </div>
@@ -553,7 +567,7 @@
                       class="btn btn-sm btn-dark fw-bolder"
                     >
                       Buy me a ☕
-                    </a> 
+                    </a>
                   </div>
 
                   <div class="mb-3">
@@ -610,13 +624,11 @@
                 style="
                   width: 640px !important;
                   max-width: 100% !important;
-                  background-color: #f5f5f9;
                 "
                 tabindex="-1"
               >
                 <div
                   class="offcanvas-header pb-4 shadow"
-                  style="background-color: #ffffff"
                 >
                   <h5 id="offcanvasNewsLabel" class="offcanvas-title">News</h5>
                   <button
@@ -711,7 +723,7 @@
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script defer src="app.js?v=14"></script>
+    <script defer src="app.js?v=15"></script>
     <script defer async src="siunusdev.counter.js?v=5"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
