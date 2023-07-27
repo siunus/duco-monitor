@@ -433,7 +433,7 @@ setPriceUSDHistory = function (price) {
   const ducoPriceUSD = $("#duco-price-usd");
   const priceChangeDiff = $("#price-change-diff");
 
-  ducoPriceUSD.text(`$${price}`);
+  ducoPriceUSD.html(`<span title="${price}">$${price.toFixed(8)}</span>`);
 
   let history = localStorage.getItem(PRICE_USD_HISTORY);
 
