@@ -1059,6 +1059,8 @@ checkTheme = function () {
   const coreCss = $(".template-customizer-core-css");
   const themeCss = $(".template-customizer-theme-css");
   const themeToggle = $(".theme-toggle");
+  const githubComment = $('iframe.utterances-frame');
+  const githubCommentSrc = githubComment.attr('src');
 
   if (defaultTheme == "light") {
     coreCss.attr("href", "assets/vendor/css/new/core.css");
@@ -1067,6 +1069,10 @@ checkTheme = function () {
     headingColor = config.colors.headingColor;
     borderColor = config.colors.borderColor;
     themeToggle.html(`<i class="bx bx-moon"></i>`);
+
+    if(githubComment.length > 0 && githubCommentSrc.includes('github-dark')) {
+      githubComment.attr('src', githubCommentSrc.replaceAll('github-dark', 'github-light'));
+    }
   } else {
     coreCss.attr("href", "assets/vendor/css/new/core-dark.css");
     themeCss.attr("href", "assets/vendor/css/new/theme-default-dark.css");
@@ -1074,6 +1080,10 @@ checkTheme = function () {
     headingColor = config.colors_dark.headingColor;
     borderColor = config.colors_dark.borderColor;
     themeToggle.html(`<i class="bx bx-sun"></i>`);
+
+    if(githubComment.length > 0 && githubCommentSrc.includes('github-light')) {
+      githubComment.attr('src', githubCommentSrc.replaceAll('github-light', 'github-dark'));
+    }
   }
   
   incomeChart.updateOptions({
