@@ -97,25 +97,34 @@ dateHis = function (date = new Date()) {
 };
 
 hashrateFormatted = function (val) {
+  const hashrateUnits = [" H/s", " KH/s", " MH/s", " GH/s", " TH/s"];
   let hashrate = val;
-  let hashrate_unit = " H/s";
+  let divided = 0;
 
-  if (hashrate > 1000) {
+  while (hashrate > 1000) {
     hashrate = hashrate / 1000;
-    hashrate_unit = " KH/s";
+    divided++;
   }
 
-  if (hashrate > 1000) {
-    hashrate = hashrate / 1000;
-    hashrate_unit = " MH/s";
+  return hashrate.toFixed(2) + hashrateUnits[divided];
+};
+
+timeFormatted = function (val) {
+  const timeUnits = [" ms", " sec", " min", " hr"];
+  let time = val;
+  let units = timeUnits[0];
+
+  if (val > 1000) {
+    time = time / 1000;
+    units = timeUnits[1];
   }
 
-  if (hashrate > 1000) {
-    hashrate = hashrate / 1000;
-    hashrate_unit = " GH/s";
+  if(val > 1000 * 60) {
+    time = time / 60;
+    units = timeUnits[2];
   }
 
-  return hashrate.toFixed(2) + hashrate_unit;
+  return time.toFixed(0) + units;
 };
 
 getUrlParam = function (name) {
@@ -143,7 +152,7 @@ checkUsername = function (username, form = null) {
     url: `${DUCO_REST_API}/users/${username}`,
   })
     .done(function (res) {
-      console.log(res);
+      // console.log(res);
 
       if (res.success) {
         setUsername(username);
@@ -182,7 +191,7 @@ getAchievements = function () {
     url: `${DUCO_REST_API}/achievements`,
   })
     .done(function (res) {
-      console.log(res);
+      // console.log(res);
 
       if (res.success) {
         setAchievements(res);
@@ -234,7 +243,7 @@ getUserData = function () {
     url: `${DUCO_REST_API}/v2/users/${username}`,
   })
     .done(function (res) {
-      console.log(res);
+      // console.log(res);
 
       if (res.success) {
         setUserData(res);
@@ -391,6 +400,7 @@ setMiners = function (miners) {
       <td class="text-danger">${miners[i].rejected}</td>
       <td>${hashrateFormatted(miners[i].hashrate)}</td>
       <td>${miners[i].diff}</td>
+      <td><small>${timeFormatted(miners[i].pg)}</small></td>
       <td><small>${miners[i].pool}</small></td>
       <td><small>${miners[i].algorithm}</small></td>
     </tr>`;
@@ -400,7 +410,7 @@ setMiners = function (miners) {
     tableMiners.find("tbody").html(tableRows);
   } else {
     tableMiners.find("tbody").html(`<tr>
-      <td colspan="9" align="center" class="border-0">
+      <td colspan="10" align="center" class="border-0">
         <div class="p-5">No active miner.</div>
       </td>
     </tr>`);
@@ -465,14 +475,8 @@ setUserAchievements = function(data) {
   <a href="#" data-bs-toggle="modal" data-bs-target="#modalAchievements">See here</a>
   `);
 
-  console.log(data);
-
   for(i in data) {
-    // console.log('#achievement_' + data[i]);
-    // const id = "#achievement_" + data[i];
     const list = listAchievements.find(`#achievement_${data[i]}`);
-
-    // console.log(list);
 
     if(list.length > 0) {
       const indicator = list.find('.timeline-indicator-warning');
@@ -896,7 +900,6 @@ updatePriceChart = function (series = [], categories = []) {
 
   series = series.slice(maxData * -1);
   categories = categories.slice(maxData * -1);
-  categories[0] = "";
 
   priceHistoryChart.updateOptions({
     series: [
@@ -1124,20 +1127,8 @@ toggleTheme = function () {
   const themeCss = $(".template-customizer-theme-css");
 
   if (defaultTheme == "light") {
-    // coreCss.attr('href', 'assets/vendor/css/new/core-dark.css');
-    // themeCss.attr('href', 'assets/vendor/css/new/theme-default-dark.css');
-    // cardColor = config.colors_dark.white;
-    // headingColor = config.colors_dark.headingColor;
-    // axisColor = config.colors_dark.axisColor;
-    // borderColor = config.colors_dark.borderColor;
     localStorage.setItem(DEFAULT_THEME, "dark");
   } else {
-    // coreCss.attr('href', 'assets/vendor/css/new/core.css');
-    // themeCss.attr('href', 'assets/vendor/css/new/theme-default.css');
-    // cardColor = config.colors.white;
-    // headingColor = config.colors.headingColor;
-    // axisColor = config.colors.axisColor;
-    // borderColor = config.colors.borderColor;
     localStorage.setItem(DEFAULT_THEME, "light");
   }
 
