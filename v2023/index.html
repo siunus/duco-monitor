@@ -64,6 +64,9 @@
       .table#table-miners > :not(caption) > * > * {
         padding: 0.4rem;
       }
+      .gray-100 {
+        filter: grayscale(100%);
+      }
     </style>
 
     <!-- Helpers -->
@@ -88,13 +91,16 @@
                 <div class="col-lg-8 mb-4 order-0">
                   <div class="card h-100">
                     <div class="d-flex align-items-end row">
-                      <div class="col-sm-7">
+                      <div class="col-sm-8">
                         <div class="card-body">
                           <h5 class="card-title text-primary">
                             Hello <span class="username"></span> 👋
                           </h5>
 
-                          <p class="mb-4" id="account-info"><br /><br /></p>
+                          <div class="d-flex gap-5">
+                            <p class="mb-4" id="account-info"><br /><br /></p>
+                            <p class="mb-4" id="achievements"><br /><br /></p>
+                          </div>
 
                           <button
                             class="btn btn-sm btn-outline-primary mb-1"
@@ -207,10 +213,40 @@
                               </div>
                             </div>
                           </form>
+
+                          <div
+                            class="modal fade"
+                            id="modalAchievements"
+                            tabindex="-1"
+                            aria-hidden="true"
+                          >
+                            <div
+                              class="modal-dialog modal-dialog-centered"
+                              role="document"
+                            >
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="modalCenterTitle">
+                                    <i class="bx bxs-trophy text-primary me-1"></i> Achievements
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  ></button>
+                                </div>
+                                <div class="modal-body py-0">
+                                  <ul class="timeline ps-3 mt-4" id="list-achievements">
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
-                      <div class="col-sm-5 text-center text-sm-left">
+                      <div class="col-sm-4 text-center text-sm-left">
                         <div class="card-body pb-0 px-0 px-md-4">
                           <img
                             src="assets/img/illustrations/man-with-laptop-light.png"
@@ -346,7 +382,7 @@
                 <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
                   <div class="row">
                     <div class="col-6 mb-4">
-                      <div class="card">
+                      <div class="card h-100">
                         <div class="card-body">
                           <div
                             class="card-title d-flex align-items-start justify-content-between"
@@ -370,7 +406,7 @@
                     </div>
 
                     <div class="col-6 mb-4">
-                      <div class="card">
+                      <div class="card h-100">
                         <div class="card-body">
                           <div
                             class="card-title d-flex align-items-start justify-content-between"
@@ -621,15 +657,10 @@
                 id="offcanvasNews"
                 class="offcanvas offcanvas-end"
                 aria-labelledby="offcanvasNewsLabel"
-                style="
-                  width: 640px !important;
-                  max-width: 100% !important;
-                "
+                style="width: 640px !important; max-width: 100% !important"
                 tabindex="-1"
               >
-                <div
-                  class="offcanvas-header pb-4 shadow"
-                >
+                <div class="offcanvas-header pb-4 shadow">
                   <h5 id="offcanvasNewsLabel" class="offcanvas-title">News</h5>
                   <button
                     type="button"
@@ -723,7 +754,7 @@
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script defer src="app.js?v=16"></script>
+    <script defer src="app.js?v=17"></script>
     <script defer async src="siunusdev.counter.js?v=5"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

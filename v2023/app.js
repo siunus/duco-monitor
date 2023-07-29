@@ -45,8 +45,9 @@ $(document).ready(() => {
   setUsername(username);
   console.log("Ready", getUsername());
 
-  getUserData();
+  getAchievements();
   getStatistics();
+  getUserData();
   getNews();
 });
 
@@ -175,13 +176,65 @@ getUsername = function () {
   return localStorage.getItem(DUCO_USERNAME);
 };
 
+getAchievements = function () {
+  $.ajax({
+    method: "GET",
+    url: `${DUCO_REST_API}/achievements`,
+  })
+    .done(function (res) {
+      console.log(res);
+
+      if (res.success) {
+        setAchievements(res);
+      }
+    })
+    .fail(function (err) {
+      console.error(err);
+    });
+  // .always(function () {
+  // setTimeout(getUserData, 5000);
+  // });
+};
+
+setAchievements = function (data) {
+  const listAchievements = $("#list-achievements");
+
+  let listRows = "";
+  for (id in data.result) {
+    const _data = data.result[id];
+    const reward = _data.reward > 0 ? `<p class="text-muted mb-0">Reward: ${_data.reward}</p>` : '';
+
+    listRows += `<li class="timeline-item ps-4 border-left-dashed pb-2" id="achievement_${id}">
+      <span class="timeline-indicator-advanced timeline-indicator-warning border-0 shadow-none" >
+        <i class="bx bx-circle"></i>
+      </span>
+      <div class="timeline-event ps-0 pb-0">
+        <div class="timeline-header">
+          <small class="text-warning text-uppercase fw-medium">
+            ${_data.name}
+          </small>
+        </div>
+        <h6 class="mb-1 text-muted">
+          <div class="d-flex align-items-center">
+            <img class="me-3 gray-100" src="${_data.icon}" width="40px"/>
+            <span>${_data.description}</span>
+          </div>
+        </h6>
+        ${reward}
+      </div>
+    </li>`;
+  }
+
+  listAchievements.html(listRows);
+};
+
 getUserData = function () {
   $.ajax({
     method: "GET",
-    url: `${DUCO_REST_API}/users/${username}`,
+    url: `${DUCO_REST_API}/v2/users/${username}`,
   })
     .done(function (res) {
-      // console.log(res);
+      console.log(res);
 
       if (res.success) {
         setUserData(res);
@@ -208,7 +261,6 @@ setUserData = function (data) {
   }
 
   info += `<i class="bx bxs-award text-primary me-1"></i> ${data.result?.balance?.trust_score} Trust Score<br/>`;
-
   accountInfo.html(info);
 
   balance = data.result?.balance?.balance ?? 0;
@@ -216,6 +268,7 @@ setUserData = function (data) {
   setBalanceHistory(balance);
   setMiners(data.result?.miners ?? []);
   setLastTransactions(data?.result?.transactions ?? []);
+  setUserAchievements(data?.result?.achievements ?? []);
 };
 
 setBalance = function (balance) {
@@ -402,6 +455,43 @@ setLastTransactions = function (transactions) {
     listLastTransactions.html(listRows);
   }
 };
+
+setUserAchievements = function(data) {
+  const listAchievements = $("#list-achievements");
+  const achievements = $("#achievements");
+
+  achievements.html(`
+  <i class="bx bxs-trophy text-primary me-1"></i> ${data.length} Achievements<br/>
+  <a href="#" data-bs-toggle="modal" data-bs-target="#modalAchievements">See here</a>
+  `);
+
+  console.log(data);
+
+  for(i in data) {
+    // console.log('#achievement_' + data[i]);
+    // const id = "#achievement_" + data[i];
+    const list = listAchievements.find(`#achievement_${data[i]}`);
+
+    // console.log(list);
+
+    if(list.length > 0) {
+      const indicator = list.find('.timeline-indicator-warning');
+      indicator.removeClass('timeline-indicator-warning');
+      indicator.addClass('timeline-indicator-success');
+      indicator.html(`<i class="bx bxs-check-circle"></i>`);
+
+      const title = list.find('.text-warning');
+      title.removeClass('text-warning');
+      title.addClass('text-success');
+
+      const description = list.find('h6');
+      description.removeClass('text-muted');
+
+      const icon = list.find('img');
+      icon.removeClass('gray-100');
+    }
+  }
+}
 
 getStatistics = function () {
   $.ajax({
@@ -1059,8 +1149,8 @@ checkTheme = function () {
   const coreCss = $(".template-customizer-core-css");
   const themeCss = $(".template-customizer-theme-css");
   const themeToggle = $(".theme-toggle");
-  const githubComment = $('iframe.utterances-frame');
-  const githubCommentSrc = githubComment.attr('src');
+  const githubComment = $("iframe.utterances-frame");
+  const githubCommentSrc = githubComment.attr("src");
 
   if (defaultTheme == "light") {
     coreCss.attr("href", "assets/vendor/css/new/core.css");
@@ -1070,8 +1160,11 @@ checkTheme = function () {
     borderColor = config.colors.borderColor;
     themeToggle.html(`<i class="bx bx-moon"></i>`);
 
-    if(githubComment.length > 0 && githubCommentSrc.includes('github-dark')) {
-      githubComment.attr('src', githubCommentSrc.replaceAll('github-dark', 'github-light'));
+    if (githubComment.length > 0 && githubCommentSrc.includes("github-dark")) {
+      githubComment.attr(
+        "src",
+        githubCommentSrc.replaceAll("github-dark", "github-light")
+      );
     }
   } else {
     coreCss.attr("href", "assets/vendor/css/new/core-dark.css");
@@ -1081,11 +1174,14 @@ checkTheme = function () {
     borderColor = config.colors_dark.borderColor;
     themeToggle.html(`<i class="bx bx-sun"></i>`);
 
-    if(githubComment.length > 0 && githubCommentSrc.includes('github-light')) {
-      githubComment.attr('src', githubCommentSrc.replaceAll('github-light', 'github-dark'));
+    if (githubComment.length > 0 && githubCommentSrc.includes("github-light")) {
+      githubComment.attr(
+        "src",
+        githubCommentSrc.replaceAll("github-light", "github-dark")
+      );
     }
   }
-  
+
   incomeChart.updateOptions({
     grid: {
       borderColor: borderColor,
@@ -1097,5 +1193,5 @@ checkTheme = function () {
       width: 5,
       colors: [cardColor],
     },
-  })
+  });
 };
