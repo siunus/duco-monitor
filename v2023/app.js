@@ -119,9 +119,14 @@ timeFormatted = function (val) {
     units = timeUnits[1];
   }
 
-  if(val > 1000 * 60) {
+  if (val > 1000 * 60) {
     time = time / 60;
     units = timeUnits[2];
+  }
+
+  if (val > 1000 * 60 * 60) {
+    time = time / 60;
+    units = timeUnits[3];
   }
 
   return time.toFixed(0) + units;
@@ -211,7 +216,10 @@ setAchievements = function (data) {
   let listRows = "";
   for (id in data.result) {
     const _data = data.result[id];
-    const reward = _data.reward > 0 ? `<p class="text-muted mb-0">Reward: ${_data.reward}</p>` : '';
+    const reward =
+      _data.reward > 0
+        ? `<p class="text-muted mb-0">Reward: ${_data.reward}</p>`
+        : "";
 
     listRows += `<li class="timeline-item ps-4 border-left-dashed pb-2" id="achievement_${id}">
       <span class="timeline-indicator-advanced timeline-indicator-warning border-0 shadow-none" >
@@ -359,8 +367,8 @@ setBalanceHistory = function (balance) {
 };
 
 sortMinerAsc = function (a, b) {
-  const nameA = a.software.toUpperCase();
-  const nameB = b.software.toUpperCase();
+  const nameA = a.identifier.toUpperCase();
+  const nameB = b.identifier.toUpperCase();
 
   if (nameA < nameB) {
     return -1;
@@ -392,6 +400,11 @@ setMiners = function (miners) {
     accepted += miners[i].accepted;
     rejected += miners[i].rejected;
 
+    const ping =
+      miners[i].pg > 300
+        ? `<small class="text-danger">${timeFormatted(miners[i].pg)}</small>`
+        : `<small>${timeFormatted(miners[i].pg)}</small>`;
+
     tableRows += `<tr id="${miners[i].threadid}">
       <th scope="row">${num}</th>
       <td><small>${miners[i].software}</small></td>
@@ -400,7 +413,7 @@ setMiners = function (miners) {
       <td class="text-danger">${miners[i].rejected}</td>
       <td>${hashrateFormatted(miners[i].hashrate)}</td>
       <td>${miners[i].diff}</td>
-      <td><small>${timeFormatted(miners[i].pg)}</small></td>
+      <td>${ping}</td>
       <td><small>${miners[i].pool}</small></td>
       <td><small>${miners[i].algorithm}</small></td>
     </tr>`;
@@ -466,7 +479,7 @@ setLastTransactions = function (transactions) {
   }
 };
 
-setUserAchievements = function(data) {
+setUserAchievements = function (data) {
   const listAchievements = $("#list-achievements");
   const achievements = $("#achievements");
 
@@ -475,27 +488,27 @@ setUserAchievements = function(data) {
   <a href="#" data-bs-toggle="modal" data-bs-target="#modalAchievements">See here</a>
   `);
 
-  for(i in data) {
+  for (i in data) {
     const list = listAchievements.find(`#achievement_${data[i]}`);
 
-    if(list.length > 0) {
-      const indicator = list.find('.timeline-indicator-warning');
-      indicator.removeClass('timeline-indicator-warning');
-      indicator.addClass('timeline-indicator-success');
+    if (list.length > 0) {
+      const indicator = list.find(".timeline-indicator-warning");
+      indicator.removeClass("timeline-indicator-warning");
+      indicator.addClass("timeline-indicator-success");
       indicator.html(`<i class="bx bxs-check-circle"></i>`);
 
-      const title = list.find('.text-warning');
-      title.removeClass('text-warning');
-      title.addClass('text-success');
+      const title = list.find(".text-warning");
+      title.removeClass("text-warning");
+      title.addClass("text-success");
 
-      const description = list.find('h6');
-      description.removeClass('text-muted');
+      const description = list.find("h6");
+      description.removeClass("text-muted");
 
-      const icon = list.find('img');
-      icon.removeClass('gray-100');
+      const icon = list.find("img");
+      icon.removeClass("gray-100");
     }
   }
-}
+};
 
 getStatistics = function () {
   $.ajax({
