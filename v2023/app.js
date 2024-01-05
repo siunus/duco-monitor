@@ -513,7 +513,8 @@ setUserAchievements = function (data) {
 getStatistics = function () {
   $.ajax({
     method: "GET",
-    url: `${DUCO_REST_API}/statistics`,
+    // url: `${DUCO_REST_API}/statistics`,
+    url: `${DUCO_REST_API}/api.json`,
   })
     .done(function (res) {
       // console.log(res);
