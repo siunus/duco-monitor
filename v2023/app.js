@@ -1101,13 +1101,13 @@ parseNews1 = function (html) {
 
     const avatar = footer.find("figure.image img").attr("src");
 
-    // const postBody = $(body).find('img').attr('referrerpolicy', 'no-referrer');
+    const postBody = body.replaceAll('<img ', '<img style="max-width:100%" ');
 
     if(title != '' || subtitle != '') {
       news.push({
         title,
         subtitle,
-        body,
+        body: postBody,
         author,
         postDate,
         avatar: avatar ?? null,
