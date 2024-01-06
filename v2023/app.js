@@ -1115,8 +1115,6 @@ parseNews1 = function (html) {
     }
   });
 
-  console.log(news);
-
   let newsHtml = "";
   news.forEach(function (news, i) {
     const title =
