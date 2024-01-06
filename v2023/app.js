@@ -1024,7 +1024,7 @@ getNews = function () {
   })
     .done(function (res) {
       // console.log(res);
-      parseNews(res);
+      parseNews1(res);
     })
     .fail(function (err) {
       console.error(err);
@@ -1034,9 +1034,128 @@ getNews = function () {
     });
 };
 
-function stripTags(input) {
+stripTags = function (input) {
   return input.replace(/<\/?[^>]+(>|$)/g, "").trim();
-}
+};
+
+parseNews1 = function (html) {
+  const htmlNews = $(html);
+  const lists = htmlNews.find(".column.is-full.m-0");
+  const newsContainer = $("#list-news");
+
+  let news = [];
+
+  lists.each((i, list) => {
+    const content = $(list).find(".content");
+    const footer = $(list).find(".columns");
+
+    const title = content.find(".heading").text().trim().replaceAll(/\n/g, "");
+
+    const subtitle = content
+      .find(".heading")
+      .parent()
+      .contents()
+      .filter(function () {
+        return this.nodeType === 3;
+      })
+      .text()
+      .trim();
+
+    const body = content
+      .find(".heading")
+      .parent()
+      .contents()
+      .filter(function () {
+        return !$(this).hasClass("heading");
+      })
+      .filter(function () {
+        return this.nodeType === 1;
+      })
+      .map(function () {
+        return this.outerHTML || this.nodeValue;
+      })
+      .get()
+      .join("");
+
+    const author = footer
+      .find(".column.heading")
+      .contents()
+      .filter(function () {
+        return $(this).prop("nodeName") == "A";
+      })
+      .map(function () {
+        return this.outerHTML || this.nodeValue;
+      })
+      .get()
+      .join("");
+
+    const postDate = footer
+      .find(".column.heading")
+      .contents()
+      .filter(function () {
+        return this.nodeType === 3;
+      })
+      .last()
+      .text()
+      .trim();
+
+    const avatar = footer.find("figure.image img").attr("src");
+
+    // const postBody = $(body).find('img').attr('referrerpolicy', 'no-referrer');
+
+    if(title != '' || subtitle != '') {
+      news.push({
+        title,
+        subtitle,
+        body,
+        author,
+        postDate,
+        avatar: avatar ?? null,
+      });
+    }
+  });
+
+  console.log(news);
+
+  let newsHtml = "";
+  news.forEach(function (news, i) {
+    const title =
+      news.title != ""
+        ? `<h5 class="card-title text-primary mb-4">${news.title}</h5>`
+        : "";
+    const avatar =
+      news.avatar != null
+        ? `https://server.duinocoin.com/${news.avatar}`
+        : `https://duinocoin.com/assets/icons/duino.png`;
+
+    newsHtml += `<div class="card mb-4">
+        <div class="card-body">
+          ${title}
+          <div class="card-subtitle text-muted mb-4">
+            <span class="d-flex">
+              <div class="d-flex align-items-center me-3">
+              <img src="${avatar}" alt="" height="24" class="me-2 rounded-circle"/>
+                <span>${news.author}</span>
+              </div>
+              <span class="me-3">
+                <i class="bx bx-time"></i> ${news.postDate}
+              </span>
+            </span>
+          </div>
+          <p class="card-text" style="line-height: 2">
+            ${news.subtitle}
+          </p>
+          <p class="card-text" style="line-height: 2">
+            ${news.body}
+          </p>
+        </div>
+      </div>`;
+  });
+
+  if (newsHtml != "") {
+    newsContainer.html(newsHtml);
+  }
+};
 
 parseNews = function (html) {
   const listNews = $("#list-news");
