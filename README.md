@@ -6,7 +6,8 @@ https://raw.githubusercontent.com/siunus/duco-monitor/main/v2023/screenshot.png)
 
 ## URLs
 - Legacy Version: 
-[siunus.github.io/duco-monitor](https://siunus.github.io/duco-monitor)
+[siunus.github.io/duco-monitor/#siunusdev](https://siunus.github.io/duco-monitor/#siunusdev) 
+(Put duco username after #)
 - 2023 Version:
 [siunus.github.io/duco-monitor/v2023](https://siunus.github.io/duco-monitor/v2023)
 
