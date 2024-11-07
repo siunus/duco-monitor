@@ -60,7 +60,7 @@ $(".form-change-username").on("submit", function (e) {
 $("#expand-collapse-button").on("click", function (e) {
   const isExpanded = $(this).data("expanded");
   const column = $(this).closest(".card").parent();
-  const nextColumn = $(this).closest('.row').find('.col-lg-4');
+  const nextColumn = $(this).closest(".row").find(".col-lg-4");
 
   column.toggleClass("col-lg-8 col-lg-12");
   $(this).data("expanded", !isExpanded);
@@ -68,19 +68,21 @@ $("#expand-collapse-button").on("click", function (e) {
   if (!isExpanded) {
     $(this).find("#svg-expand-icon").hide();
     $(this).find("#svg-collapse-icon").show();
-    $(this).attr('title', "Collapse Card");
-    if(!isMobileDevice()) nextColumn.hide();
+    $(this).attr("title", "Collapse Card");
+    if (!isMobileDevice()) nextColumn.hide();
   } else {
     $(this).find("#svg-expand-icon").show();
     $(this).find("#svg-collapse-icon").hide();
-    $(this).attr('title', "Expand Card");
-    if(!isMobileDevice()) nextColumn.show();
+    $(this).attr("title", "Expand Card");
+    if (!isMobileDevice()) nextColumn.show();
   }
 });
 
-isMobileDevice = function() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
+isMobileDevice = function () {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
 
 invalidInput = function (element, text) {
   element.removeClass("is-invalid");
@@ -426,7 +428,11 @@ setMiners = function (miners) {
         { type: "msort", targets: 5 },
         { type: "msort", targets: 6 },
         { type: "msort", targets: 7 },
+        { orderable: false, targets: 0 },
       ],
+      rowCallback: function (row, data, index) {
+        $("td:eq(0)", row).html(index + 1);
+      },
     });
 
     $(`#${tableMiners.context[0].sTableId}`)
@@ -435,19 +441,15 @@ setMiners = function (miners) {
       .remove();
   }
 
+  let tableData = [];
   let hashrates = 0,
     accepted = 0,
     rejected = 0,
     percentage = 0;
 
-  let tableData = [];
-  let tableRows = "";
-  let num = 0;
-
   for (i in sortedMiners) {
     const miner = miners[i];
 
-    num++;
     hashrates += miner.hashrate;
     accepted += miner.accepted;
     rejected += miner.rejected;
@@ -458,7 +460,7 @@ setMiners = function (miners) {
         : `<small>${timeFormatted(miner.pg)}</small>`;
 
     tableData.push([
-      num,
+      "#",
       `<small>${miner.software}</small></td>`,
       `<small>${miner.identifier}</small>`,
       `<span class="text-success">${miner.accepted}</span>`,
@@ -473,13 +475,14 @@ setMiners = function (miners) {
     ]);
   }
 
-  tableData.forEach((row) => {
+  tableData.forEach((row, j) => {
     const rowIndex = findRowIndexByName(tableMiners, row.length - 1, row);
 
     if (rowIndex !== null) {
-      tableMiners.row(rowIndex).data(row).draw(false);
+      row[0] = j + 1;
+      tableMiners.row(rowIndex).data(row).draw(true);
     } else {
-      tableMiners.row.add(row).draw(false);
+      tableMiners.row.add(row).draw(true);
     }
   });
 
