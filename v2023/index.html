@@ -77,6 +77,10 @@
       rel="stylesheet"
       href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
     />
+    <link
+      rel="stylesheet"
+      href="assets/vendor/libs/DataTables/datatables.min.css"
+    />
 
     <!-- Page CSS -->
     <style>
@@ -500,7 +504,43 @@
               <div class="row">
                 <div class="col-md-12 col-lg-8 order-0 mb-4">
                   <div class="card h-100">
-                    <h5 class="card-header">Miners</h5>
+                    <h5 class="card-header d-flex justify-content-between align-items-center">
+                      <div class="card-title mb-0">Miners</div>
+                      <div>
+                        <button
+                          id="expand-collapse-button"
+                          class="btn btn-icon"
+                          title="Expand Card"
+                          data-expanded="false"
+                        >
+                          <svg
+                            id="svg-expand-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="#697a8d"
+                          >
+                            <path
+                              d="M8.29 5.64 1.93 12l6.36 6.36 1.42-1.41L4.76 12l4.95-4.95-1.42-1.41zm6 1.41L19.24 12l-4.95 4.95 1.42 1.41L22.07 12l-6.36-6.36-1.42 1.41z"
+                            ></path>
+                          </svg>
+                          <svg
+                            id="svg-collapse-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="#697a8d"
+                            style="display: none;"
+                          >
+                            <path
+                              d="M19.95 5.64 13.59 12l6.36 6.36 1.41-1.41L16.41 12l4.95-4.95-1.41-1.41zM2.64 7.05 7.59 12l-4.95 4.95 1.41 1.41L10.41 12 4.05 5.64 2.64 7.05z"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </h5>
                     <div class="table-responsive text-nowrap">
                       <table class="table" id="table-miners">
                         <thead>
@@ -514,17 +554,18 @@
                             <th>Diff</th>
                             <th>Ping</th>
                             <th>Pool</th>
+                            <th title="(IDK what is this mean)">IT</th>
                             <th>Algorithm</th>
+                            <th>Thread ID</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td colspan="10" align="center" class="border-0">
-                              <div class="p-5">Loading...</div>
-                            </td>
-                          </tr>
                         </tbody>
                       </table>
+
+                      <div id="loading-data" class="text-center p-5">
+                        <div class="p-5">Loading...</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -987,12 +1028,13 @@
 
     <!-- Vendors JS -->
     <script src="assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <script src="assets/vendor/libs/DataTables/datatables.min.js"></script>
 
     <!-- Main JS -->
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script defer src="app.js?v=19"></script>
+    <script defer src="app.js?v=25"></script>
     <!-- <script defer async src="siunusdev.counter.js?v=5"></script> -->
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

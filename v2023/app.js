@@ -57,6 +57,31 @@ $(".form-change-username").on("submit", function (e) {
   checkUsername(newUsername, $(this));
 });
 
+$("#expand-collapse-button").on("click", function (e) {
+  const isExpanded = $(this).data("expanded");
+  const column = $(this).closest(".card").parent();
+  const nextColumn = $(this).closest('.row').find('.col-lg-4');
+
+  column.toggleClass("col-lg-8 col-lg-12");
+  $(this).data("expanded", !isExpanded);
+
+  if (!isExpanded) {
+    $(this).find("#svg-expand-icon").hide();
+    $(this).find("#svg-collapse-icon").show();
+    $(this).attr('title', "Collapse Card");
+    if(!isMobileDevice()) nextColumn.hide();
+  } else {
+    $(this).find("#svg-expand-icon").show();
+    $(this).find("#svg-collapse-icon").hide();
+    $(this).attr('title', "Expand Card");
+    if(!isMobileDevice()) nextColumn.show();
+  }
+});
+
+isMobileDevice = function() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 invalidInput = function (element, text) {
   element.removeClass("is-invalid");
   element.parent().find(".invalid-feedback").remove();
@@ -379,55 +404,84 @@ sortMinerAsc = function (a, b) {
   }
 };
 
+let tableMiners = null;
+
 setMiners = function (miners) {
+  const sortedMiners = miners.sort(sortMinerAsc);
+
   const activeMinersCount = $("#active-miners-count");
   const acceptedPercentage = $("#accepted-percentage");
   const totalHashrate = $("#total-hashrate");
-  const tableMiners = $("#table-miners");
 
-  const sortedMiners = miners.sort(sortMinerAsc);
+  if (!tableMiners) {
+    tableMiners = $("#table-miners").DataTable({
+      info: false,
+      paging: false,
+      searching: false,
+      lengthChange: false,
+      pageLength: -1,
+      columnDefs: [
+        { type: "msort", targets: 3 },
+        { type: "msort", targets: 4 },
+        { type: "msort", targets: 5 },
+        { type: "msort", targets: 6 },
+        { type: "msort", targets: 7 },
+      ],
+    });
+
+    $(`#${tableMiners.context[0].sTableId}`)
+      .closest(".table-responsive")
+      .find("#loading-data")
+      .remove();
+  }
 
   let hashrates = 0,
     accepted = 0,
     rejected = 0,
     percentage = 0;
 
+  let tableData = [];
   let tableRows = "";
   let num = 0;
+
   for (i in sortedMiners) {
+    const miner = miners[i];
+
     num++;
-    hashrates += miners[i].hashrate;
-    accepted += miners[i].accepted;
-    rejected += miners[i].rejected;
+    hashrates += miner.hashrate;
+    accepted += miner.accepted;
+    rejected += miner.rejected;
 
     const ping =
-      miners[i].pg > 300
-        ? `<small class="text-danger">${timeFormatted(miners[i].pg)}</small>`
-        : `<small>${timeFormatted(miners[i].pg)}</small>`;
+      miner.pg > 300
+        ? `<small class="text-danger">${timeFormatted(miner.pg)}</small>`
+        : `<small>${timeFormatted(miner.pg)}</small>`;
 
-    tableRows += `<tr id="${miners[i].threadid}">
-      <th scope="row">${num}</th>
-      <td><small>${miners[i].software}</small></td>
-      <td><small>${miners[i].identifier}</small></td>
-      <td class="text-success">${miners[i].accepted}</td>
-      <td class="text-danger">${miners[i].rejected}</td>
-      <td>${hashrateFormatted(miners[i].hashrate)}</td>
-      <td>${miners[i].diff}</td>
-      <td>${ping}</td>
-      <td><small>${miners[i].pool}</small></td>
-      <td><small>${miners[i].algorithm}</small></td>
-    </tr>`;
+    tableData.push([
+      num,
+      `<small>${miner.software}</small></td>`,
+      `<small>${miner.identifier}</small>`,
+      `<span class="text-success">${miner.accepted}</span>`,
+      `<span class="text-danger">${miner.rejected}</span>`,
+      `<small>${hashrateFormatted(miner.hashrate)}</small>`,
+      `<small>${miner.diff}</small>`,
+      ping,
+      `<small>${miner.pool}</small>`,
+      `<small>${miner.it ?? ""}</small>`,
+      `<small>${miner.algorithm}</small>`,
+      miner.threadid,
+    ]);
   }
 
-  if (tableRows != "") {
-    tableMiners.find("tbody").html(tableRows);
-  } else {
-    tableMiners.find("tbody").html(`<tr>
-      <td colspan="10" align="center" class="border-0">
-        <div class="p-5">No active miner.</div>
-      </td>
-    </tr>`);
-  }
+  tableData.forEach((row) => {
+    const rowIndex = findRowIndexByName(tableMiners, row.length - 1, row);
+
+    if (rowIndex !== null) {
+      tableMiners.row(rowIndex).data(row).draw(false);
+    } else {
+      tableMiners.row.add(row).draw(false);
+    }
+  });
 
   if (miners.length > 0) {
     percentage = (accepted / (accepted + rejected)) * 100;
@@ -438,6 +492,27 @@ setMiners = function (miners) {
     `<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`
   );
   totalHashrate.text(hashrateFormatted(hashrates));
+};
+
+$.fn.dataTable.ext.type.order["msort-pre"] = function (data) {
+  if (typeof data != "string") return data;
+
+  const numericValue = data.replace(/\D/g, "");
+  return parseInt(numericValue, 10);
+};
+
+findRowIndexByName = function (table, index, search) {
+  let rowIndex = null;
+
+  table.rows().every(function (i) {
+    const data = this.data();
+    if (data[index] === search[index]) {
+      rowIndex = i;
+      return false;
+    }
+  });
+
+  return rowIndex;
 };
 
 setLastTransactions = function (transactions) {
@@ -684,8 +759,16 @@ setTopRichest = function (data) {
                 <span>${row[1]}</span>
               </div>
             </td>
-            <td>${DUCO} ${(+balance).toFixed(4)}</td>
-            <td>$ ${(+price).toFixed(8)}</td>
+            <td>
+              <span title="${balance}">
+                ${DUCO} ${(+balance).toFixed(4)}
+              </span>
+            </td>
+            <td>
+              <span title="${price}">
+                $ ${(+price).toFixed(2)}
+              </span>
+            </td>
           </tr>`;
   }
 
@@ -1101,9 +1184,9 @@ parseNews1 = function (html) {
 
     const avatar = footer.find("figure.image img").attr("src");
 
-    const postBody = body.replaceAll('<img ', '<img style="max-width:100%" ');
+    const postBody = body.replaceAll("<img ", '<img style="max-width:100%" ');
 
-    if(title != '' || subtitle != '') {
+    if (title != "" || subtitle != "") {
       news.push({
         title,
         subtitle,
