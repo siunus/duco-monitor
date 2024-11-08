@@ -34,7 +34,7 @@ let cardColor = config.colors.white,
   shadeColor;
 
 let username = localStorage.getItem(DUCO_USERNAME) ?? "siunusdev";
-let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 5;
+let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 5000;
 
 let balance = 0,
   balanceUSD = 0,
@@ -232,9 +232,6 @@ getAchievements = function () {
     .fail(function (err) {
       console.error(err);
     });
-  // .always(function () {
-  // setTimeout(getUserData, 5000);
-  // });
 };
 
 setAchievements = function (data) {
@@ -288,7 +285,7 @@ getUserData = function () {
       console.error(err);
     })
     .always(function () {
-      setTimeout(getUserData, 5000);
+      setTimeout(getUserData, refreshInterval);
     });
 };
 
@@ -602,7 +599,7 @@ getStatistics = function () {
       console.error(err);
     })
     .always(function () {
-      setTimeout(getStatistics, 5000);
+      setTimeout(getStatistics, refreshInterval);
     });
 };
 
