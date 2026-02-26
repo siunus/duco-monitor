@@ -34,7 +34,7 @@ let cardColor = config.colors.white,
   shadeColor;
 
 let username = localStorage.getItem(DUCO_USERNAME) ?? "siunusdev";
-let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 5000;
+let refreshInterval = localStorage.getItem(REFRESH_INTERVAL) ?? 30000;
 
 let balance = 0,
   balanceUSD = 0,
@@ -49,11 +49,17 @@ $(document).ready(() => {
   getStatistics();
   getUserData();
   getNews();
+  getBMCRecentSupporters();
 });
 
 $(".form-change-username").on("submit", function (e) {
   e.preventDefault();
   const newUsername = $(this).find("input.username").val();
+  const newRefreshInterval = $(this).find("input.refresh-interval").val();
+
+  refreshInterval = Math.max(10000, newRefreshInterval * 1000);
+  localStorage.setItem(REFRESH_INTERVAL, refreshInterval);
+
   checkUsername(newUsername, $(this));
 });
 
@@ -80,7 +86,7 @@ $("#expand-collapse-button").on("click", function (e) {
 
 isMobileDevice = function () {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
+    navigator.userAgent,
   );
 };
 
@@ -105,21 +111,21 @@ thousands = function (x) {
 
 dateYmdHis = function (date = new Date()) {
   return `${date.getFullYear()}-${addZero(date.getMonth() + 1)}-${addZero(
-    date.getDate()
+    date.getDate(),
   )} ${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(
-    date.getSeconds()
+    date.getSeconds(),
   )}`;
 };
 
 datejMHi = function (date = new Date()) {
   return `${monthText[date.getMonth()]} ${addZero(date.getDate())}, ${addZero(
-    date.getHours()
+    date.getHours(),
   )}:${addZero(date.getMinutes())}`;
 };
 
 dateHis = function (date = new Date()) {
   return `${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(
-    date.getSeconds()
+    date.getSeconds(),
   )}`;
 };
 
@@ -161,7 +167,7 @@ timeFormatted = function (val) {
 
 getUrlParam = function (name) {
   var results = new RegExp("[?&]" + name + "=([^&#]*)").exec(
-    window.location.href
+    window.location.href,
   );
   if (results == null) {
     return null;
@@ -319,10 +325,10 @@ setBalance = function (balance) {
   balanceUSD = balance * priceUSD;
 
   ducoBalance.html(
-    `<span title="${balance}">${DUCO} ${balance.toFixed(4)}</span>`
+    `<span title="${balance}">${DUCO} ${balance.toFixed(4)}</span>`,
   );
   ducoBalanceUSD.html(
-    `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`
+    `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`,
   );
 };
 
@@ -345,7 +351,7 @@ setBalanceHistory = function (balance) {
     history[key] = balance;
     localStorage.setItem(
       `${username}_${BALANCE_HISTORY}`,
-      JSON.stringify(history)
+      JSON.stringify(history),
     );
   }
 
@@ -364,7 +370,7 @@ setBalanceHistory = function (balance) {
     let minedInDay = minedInHour * 24;
 
     duco24hProfit.html(
-      `<span title="${minedInDay}">${DUCO} ${minedInDay.toFixed(4)}</span>`
+      `<span title="${minedInDay}">${DUCO} ${minedInDay.toFixed(4)}</span>`,
     );
   }
 
@@ -379,7 +385,7 @@ setBalanceHistory = function (balance) {
       const last_bal = history[_lastKey];
       _incomeSeriesData[_incomeSeriesData.length] = bal - last_bal;
       _incomeSeriesCategories[_incomeSeriesCategories.length] = dateHis(
-        new Date(+_key)
+        new Date(+_key),
       );
     }
 
@@ -489,7 +495,7 @@ setMiners = function (miners) {
 
   activeMinersCount.text(miners.length);
   acceptedPercentage.html(
-    `<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`
+    `<span title="${percentage}">${percentage.toFixed(2)}% accepted</span>`,
   );
   totalHashrate.text(hashrateFormatted(hashrates));
 };
@@ -614,7 +620,7 @@ setStatistics = function (data) {
     priceUSD = data?.["Duco price"];
     balanceUSD = balance * priceUSD;
     ducoBalanceUSD.html(
-      `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`
+      `<span title="${balanceUSD}">~ $ ${balanceUSD.toFixed(2)}</span>`,
     );
     setPriceUSDHistory(priceUSD);
   }
@@ -659,14 +665,14 @@ setPriceUSDHistory = function (price) {
       priceChangeDiff.removeClass("text-danger");
       priceChangeDiff.addClass("text-success");
       priceChangeDiff.html(
-        `<i class="bx bx-chevron-up"></i> $${change.toFixed(8)}`
+        `<i class="bx bx-chevron-up"></i> $${change.toFixed(8)}`,
       );
     } else {
       change = change * -1;
       priceChangeDiff.removeClass("text-success");
       priceChangeDiff.addClass("text-danger");
       priceChangeDiff.html(
-        `<i class="bx bx-chevron-down"></i> $${change.toFixed(8)}`
+        `<i class="bx bx-chevron-down"></i> $${change.toFixed(8)}`,
       );
     }
   }
@@ -677,7 +683,7 @@ setPriceUSDHistory = function (price) {
   for (_key in history) {
     _priceSeriesData[_priceSeriesData.length] = history[_key];
     _priceSeriesCategories[_priceSeriesCategories.length] = datejMHi(
-      new Date(+_key)
+      new Date(+_key),
     );
   }
 
@@ -984,7 +990,7 @@ const priceHistoryChartConfig = {
 if (typeof priceHistoryChartEl !== undefined && priceHistoryChartEl !== null) {
   var priceHistoryChart = new ApexCharts(
     priceHistoryChartEl,
-    priceHistoryChartConfig
+    priceHistoryChartConfig,
   );
   priceHistoryChart.render();
 }
@@ -1101,20 +1107,20 @@ updateMinerDistChart = function (_series = [], _labels = [], _colors = []) {
 };
 
 getNews = function () {
-  $.ajax({
-    method: "GET",
-    url: `${DUCO_REST_API}/news`,
-  })
-    .done(function (res) {
-      // console.log(res);
-      parseNews1(res);
-    })
-    .fail(function (err) {
-      console.error(err);
-    })
-    .always(function () {
-      setTimeout(getNews, 1000 * 60);
-    });
+  // $.ajax({
+  //   method: "GET",
+  //   url: `${DUCO_REST_API}/news`,
+  // })
+  //   .done(function (res) {
+  //     // console.log(res);
+  //     parseNews1(res);
+  //   })
+  //   .fail(function (err) {
+  //     console.error(err);
+  //   })
+  //   .always(function () {
+  //     setTimeout(getNews, 1000 * 60);
+  //   });
 };
 
 stripTags = function (input) {
@@ -1263,7 +1269,7 @@ parseNews = function (html) {
           content = content.split(" </span>")[0];
           content = content.replaceAll(
             "img src",
-            'img class="mb-2" style="max-width: 100%" src'
+            'img class="mb-2" style="max-width: 100%" src',
           );
           content = content.replaceAll("<B>", "<b>");
           content = content.replaceAll("<script", "<noscript");
@@ -1368,7 +1374,7 @@ checkTheme = function () {
     if (githubComment.length > 0 && githubCommentSrc.includes("github-dark")) {
       githubComment.attr(
         "src",
-        githubCommentSrc.replaceAll("github-dark", "github-light")
+        githubCommentSrc.replaceAll("github-dark", "github-light"),
       );
     }
   } else {
@@ -1382,7 +1388,7 @@ checkTheme = function () {
     if (githubComment.length > 0 && githubCommentSrc.includes("github-light")) {
       githubComment.attr(
         "src",
-        githubCommentSrc.replaceAll("github-light", "github-dark")
+        githubCommentSrc.replaceAll("github-light", "github-dark"),
       );
     }
   }
@@ -1399,4 +1405,101 @@ checkTheme = function () {
       colors: [cardColor],
     },
   });
+};
+
+getBMCRecentSupporters = function () {
+  // https://app.buymeacoffee.com/api/creators/slug/siunusdev/coffees?web=1&page=1&per_page=10
+  $.ajax({
+    method: "GET",
+    url: `https://app.buymeacoffee.com/api/creators/slug/siunusdev/coffees?web=1&page=1&per_page=10`,
+  })
+    .done(function (res) {
+      // console.log(res);
+      setBMCRecentSupporters(res.data);
+    })
+    .fail(function (err) {
+      console.error(err);
+    });
+};
+
+setBMCRecentSupporters = function (data) {
+  const listSupporters = $("#list-supporters");
+
+  /* data sample
+  {
+"id": 7088304,
+"support_id": 7088304,
+"fk_project_id": 1588825,
+"fk_user_id": 5803175,
+"profile_full_name": "revox from the Duino-Coin Team",
+"profile_picture_url": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png@300w_0e.webp",
+"profile_picture": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png",
+"default_profile_picture_url": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png@300w_0e.webp",
+"project_slug": "siunusdev",
+"project_tag_alternative": "coffee",
+"project_tag_emoji": "☕",
+"support_type": "Supporter",
+"support_message": "<span class=\"suppUsername\" ><a target=\"_blank\" rel=\"nofollow\" href=\"https://www.buymeacoffee.com/LmbBkzkQEZ\">revox from the Duino-Coin Team</a></span> bought 3 coffees.",
+"subscription_id": null,
+"comments": [],
+"support_coffees": 3,
+"support_visibility": 1,
+"support_created_on": "2024-05-29T19:56:51.000000Z",
+"support_updated_on": "2024-05-29T19:56:51.000000Z",
+"transfer_id": null,
+"supporter_name": "revox from the Duino-Coin Team",
+"msg_hidden": 0,
+"is_pinned": 0,
+"notification_id": 9727771,
+"supporter_role_is_creator": true,
+"widget_version": 1,
+"support_note": "There you go. Thanks for helping Duino!",
+"support_gif": null,
+"support_video": null
+},
+*/
+
+  let listRows = "";
+  data.forEach(function (supporter) {
+    const supportMessage = supporter.support_message.slice(
+      supporter.support_message.indexOf("</span>") + 7,
+    );
+
+    listRows += `
+      <div class="col-6">
+        <div class="card mb-4">
+          <div
+            class="card-body text-body d-flex flex-column justify-content-between h-100"
+          >
+            <div class="mb-2">
+              "${supporter.support_note}"
+              <div class="text-warning my-2">${supporter.project_tag_emoji} x ${supporter.support_coffees}</div>
+            </div>
+
+            <div>
+              <div class="small text-muted mb-2">${dayjs(supporter.support_created_on).format("MMM DD, YYYY")}</div>
+              <div class="d-flex align-items-center">
+                <div class="avatar me-2 avatar-sm">
+                  <img
+                    src="${supporter.profile_picture_url}"
+                    alt="Avatar"
+                    class="rounded-circle"
+                  />
+                </div>
+                <div>
+                  <h6 class="mb-0">${supporter.supporter_name}</h6>
+                  <p class="small text-muted mb-0">
+                    ${supportMessage}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  });
+
+  if (listRows != "") {
+    listSupporters.append(listRows);
+  }
 };

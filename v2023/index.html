@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html
   lang="en"
@@ -143,7 +143,7 @@
                             <i class="bx bx-chat"></i> Comments
                           </button>
 
-                          <button
+                          <!-- <button
                             class="btn btn-sm btn-outline-primary mb-1"
                             type="button"
                             data-bs-toggle="offcanvas"
@@ -151,7 +151,7 @@
                             aria-controls="offcanvasNews"
                           >
                             <i class="bx bx-news"></i> News
-                          </button>
+                          </button> -->
 
                           <button
                             class="btn btn-sm btn-outline-primary mb-1 theme-toggle"
@@ -203,16 +203,41 @@
                                       </div>
                                     </div>
                                     <div class="row">
+                                      <div class="col-md-4 mb-4">
+                                        <label class="form-label"
+                                          >Refresh Interval (seconds)</label
+                                        >
+                                        <input
+                                          type="number"
+                                          class="form-control refresh-interval"
+                                          placeholder="in seconds"
+                                          value="30"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div class="row">
                                       <div class="col">
                                         <div
-                                          class="alert alert-primary"
+                                          class="alert alert-warning"
                                           role="alert"
                                         >
-                                          All retrieved data is stored in your
-                                          browser memory.<br />
-                                          Sometimes you need to clear browser
-                                          data if you don't have enough memory
-                                          or it slows down your device.
+                                          <small>
+                                            Please use "safe" refresh interval
+                                            to prevent data overload and browser
+                                            crash.<br />
+                                            Lower interval will make the app
+                                            more responsive but can cause high
+                                            memory usage and server overload.<br />
+                                            Minimum interval is 10 seconds.
+                                            Recommended interval is 30 seconds
+                                            or higher.<br />
+                                            <br />
+                                            All retrieved data is stored in your
+                                            browser memory.<br />
+                                            Sometimes you need to clear browser
+                                            data if you don't have enough memory
+                                            or it slows down your device.<br />
+                                          </small>
                                         </div>
                                       </div>
                                     </div>
@@ -648,8 +673,8 @@
               </div>
 
               <div class="row">
-                <div class="col-md-4 mb-4">
-                  <div class="card bg-gradient-primary">
+                <div class="col-12 col-lg-4">
+                  <div class="card bg-gradient-primary mb-4">
                     <div class="card-body">
                       <div class="row justify-content-between mb-3">
                         <div
@@ -820,207 +845,129 @@
                   </div>
                 </div>
 
-                <div class="col-md-4 mb-4">
-                  <div class="card h-50 mb-4">
-                    <div
-                      class="card-body text-body d-flex flex-column justify-content-between h-100"
-                    >
-                      <div class="mb-2">
-                        "Mantap bro .."
-                        <div class="text-warning my-2">10K IDR</div>
-                      </div>
-
-                      <div>
-                        <div class="small text-muted mb-2">Sep 28, 2024</div>
-                        <div class="d-flex align-items-center">
-                          <div class="avatar me-2 avatar-sm">
-                            <img
-                              src="https://saweria.co/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcapy_money.3f25c545.svg&w=384&q=75"
-                              alt="Avatar"
-                              class="rounded-circle"
-                            />
+                <div class="col-12 col-lg-8">
+                  <div class="row" id="list-supporters">
+                    <div class="col-6">
+                      <div class="card mb-4">
+                        <div
+                          class="card-body text-body d-flex flex-column justify-content-between h-100"
+                        >
+                          <div class="mb-2">
+                            "Mantap bro .."
+                            <div class="text-warning my-2">10K IDR</div>
                           </div>
+
                           <div>
-                            <h6 class="mb-0">richie_rich_duco</h6>
-                            <p class="small text-muted mb-0">nyawer</p>
+                            <div class="small text-muted mb-2">
+                              Sep 28, 2024
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <div class="avatar me-2 avatar-sm">
+                                <img
+                                  src="https://saweria.co/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fcapy_money.3f25c545.svg&w=384&q=75"
+                                  alt="Avatar"
+                                  class="rounded-circle"
+                                />
+                              </div>
+                              <div>
+                                <h6 class="mb-0">richie_rich_duco</h6>
+                                <p class="small text-muted mb-0">nyawer</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="card mt-4">
-                    <div
-                      class="card-body text-body d-flex flex-column justify-content-between h-100"
-                    >
-                      <div class="mb-2">
-                        "There you go. Thanks for helping Duino!"
-                        <div class="text-warning my-2">☕ x 3</div>
-                      </div>
-
-                      <div>
-                        <div class="small text-muted mb-2">May 29, 2024</div>
-                        <div class="d-flex align-items-center">
-                          <div class="avatar me-2 avatar-sm">
-                            <img
-                              src="https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png@300w_0e.webp"
-                              alt="Avatar"
-                              class="rounded-circle"
-                            />
+                    <div class="col-6">
+                      <div class="card mb-4">
+                        <div
+                          class="card-body text-body d-flex flex-column justify-content-between h-100"
+                        >
+                          <div class="mb-2">
+                            "Semangat bang!"
+                            <div class="text-warning my-2">10K IDR</div>
                           </div>
+
                           <div>
-                            <h6 class="mb-0">revox</h6>
-                            <p class="small text-muted mb-0">
-                              bought 3 coffees
-                            </p>
+                            <div class="small text-muted mb-2">
+                              Sep 20, 2023
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <div class="avatar me-2 avatar-sm">
+                                <img
+                                  src="https://saweria.co/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fchicken_money.a24d8223.svg&w=384&q=75"
+                                  alt="Avatar"
+                                  class="rounded-circle"
+                                />
+                              </div>
+                              <div>
+                                <h6 class="mb-0">Idub</h6>
+                                <p class="small text-muted mb-0">nyawer</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                <div class="col-md-4 mb-4">
-                  <div class="card mb-4">
-                    <div
-                      class="card-body text-body d-flex flex-column justify-content-between h-100"
-                    >
-                      <div class="mb-2">
-                        "Semangat bang!"
-                        <div class="text-warning my-2">10K IDR</div>
-                      </div>
-
-                      <div>
-                        <div class="small text-muted mb-2">Sep 20, 2023</div>
-                        <div class="d-flex align-items-center">
-                          <div class="avatar me-2 avatar-sm">
-                            <img
-                              src="https://saweria.co/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fchicken_money.a24d8223.svg&w=384&q=75"
-                              alt="Avatar"
-                              class="rounded-circle"
-                            />
-                          </div>
-                          <div>
-                            <h6 class="mb-0">Idub</h6>
-                            <p class="small text-muted mb-0">nyawer</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="card h-50 mt-4">
-                    <div
-                      class="card-body text-body d-flex flex-column justify-content-between h-100"
-                    >
-                      <div class="mb-2">
-                        "Your Duco monitor is awesome. I visit it at least once
-                        a day to see if any of my devices are restarting. Keep
-                        up the good work!"
-                        <div class="text-warning my-2">☕ x 1</div>
-                      </div>
-
-                      <div>
-                        <div class="small text-muted mb-2">Sep 19, 2023</div>
-                        <div class="d-flex align-items-center">
-                          <div class="avatar me-2 avatar-sm">
-                            <img
-                              src="https://cdn.buymeacoffee.com/uploads/profile_pictures/default/v2/EFC16D/EN.png"
-                              alt="Avatar"
-                              class="rounded-circle"
-                            />
-                          </div>
-                          <div>
-                            <h6 class="mb-0">Encrypt0234</h6>
-                            <p class="small text-muted mb-0">bought a coffee</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <!-- Add more supporter cards here -->
                   </div>
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-12">
-                  <div class="mb-3">
-                    <!-- Histats.com  (div with counter) -->
-                    <div id="histats_counter"></div>
-                    <!-- Histats.com  START  (aync)-->
-                    <script type="text/javascript">
-                      var _Hasync = _Hasync || [];
-                      _Hasync.push([
-                        "Histats.start",
-                        "1,4834869,4,107,170,20,00001001",
-                      ]);
-                      _Hasync.push(["Histats.fasi", "1"]);
-                      _Hasync.push(["Histats.track_hits", ""]);
-                      (function () {
-                        var hs = document.createElement("script");
-                        hs.type = "text/javascript";
-                        hs.async = true;
-                        hs.src = "//s10.histats.com/js15_as.js";
-                        (
-                          document.getElementsByTagName("head")[0] ||
-                          document.getElementsByTagName("body")[0]
-                        ).appendChild(hs);
-                      })();
-                    </script>
-                    <noscript
-                      ><a href="/" target="_blank"
-                        ><img
-                          src="//sstatic1.histats.com/0.gif?4834869&101"
-                          alt="best counter"
-                          border="0" /></a
-                    ></noscript>
-                    <!-- Histats.com  END  -->
-                  </div>
-                  <!-- <div id="siunusdev-online-counter" class="mb-3">
-                    <div
-                      class="badge rounded-pill bg-dark"
-                      style="text-transform: none"
-                    >
-                      Online:&nbsp;
-                      <span id="counter-online" class="fw-bolder">-</span>
-                    </div>
-                    <div
-                      class="badge rounded-pill bg-dark"
-                      style="text-transform: none"
-                    >
-                      Visitor:&nbsp;
-                      <span id="counter-visitor" class="fw-bolder">-</span>
-                    </div>
-                  </div> -->
+              <div class="d-flex align-items-top gap-2">
+                <div style="margin-top: 1px">
+                  <!-- Histats.com  (div with counter) -->
+                  <div id="histats_counter"></div>
+                  <!-- Histats.com  START  (aync)-->
+                  <script type="text/javascript">
+                    var _Hasync = _Hasync || [];
+                    _Hasync.push([
+                      "Histats.start",
+                      "1,4834869,4,128,112,33,00011111",
+                    ]);
+                    _Hasync.push(["Histats.fasi", "1"]);
+                    _Hasync.push(["Histats.track_hits", ""]);
+                    (function () {
+                      var hs = document.createElement("script");
+                      hs.type = "text/javascript";
+                      hs.async = true;
+                      hs.src = "//s10.histats.com/js15_as.js";
+                      (
+                        document.getElementsByTagName("head")[0] ||
+                        document.getElementsByTagName("body")[0]
+                      ).appendChild(hs);
+                    })();
+                  </script>
+                  <noscript
+                    ><a href="/" target="_blank"
+                      ><img
+                        src="//sstatic1.histats.com/0.gif?4834869&101"
+                        alt=""
+                        border="0" /></a
+                  ></noscript>
+                  <!-- Histats.com  END  -->
+                </div>
 
-                  <!-- <div class="mb-3">
-                    <a
-                      href="https://bmc.link/siunusdev"
-                      target="_blank"
-                      class="btn btn-sm btn-dark fw-bolder"
-                    >
-                      Buy me a ☕
-                    </a>
-                  </div> -->
+                <div style="margin-top: -2.5px">
+                  <img
+                    src="https://github.com/siunus/duco-monitor/actions/workflows/pages/pages-build-deployment/badge.svg"
+                    alt=""
+                  />
+                </div>
 
-                  <div class="mb-3">
-                    <img
-                      src="https://github.com/siunus/duco-monitor/actions/workflows/pages/pages-build-deployment/badge.svg"
-                      alt=""
-                    />
-                  </div>
-
-                  <div class="mb-3">
-                    <a
-                      class="github-button"
-                      href="https://github.com/siunus/duco-monitor"
-                      data-color-scheme="no-preference: light; light: light; dark: dark;"
-                      data-icon="octicon-star"
-                      data-size="large"
-                      data-show-count="true"
-                      aria-label="Star siunus/duco-monitor on GitHub"
-                      >Star</a
-                    >
-                  </div>
+                <div>
+                  <a
+                    class="github-button"
+                    href="https://github.com/siunus/duco-monitor"
+                    data-color-scheme="no-preference: light; light: light; dark: dark;"
+                    data-icon="octicon-star"
+                    data-size="small"
+                    data-show-count="true"
+                    aria-label="Star siunus/duco-monitor on GitHub"
+                    >Star</a
+                  >
                 </div>
               </div>
 
@@ -1055,7 +1002,7 @@
                   ></script>
                 </div>
                 <div
-                  class="alert bg-warning text-white d-flex align-items-center mx-4 my-2"
+                  class="alert alert-warning d-flex align-items-center mx-4 my-2"
                   role="alert"
                 >
                   <div class="flex-shrink-0 me-3">
@@ -1168,6 +1115,7 @@
     <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
     <script src="assets/vendor/js/menu.js"></script>
+    <script src="assets/vendor/js/dayjs.min.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
@@ -1178,7 +1126,7 @@
     <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script defer src="app.js?v=26"></script>
+    <script defer src="app.js?v=28"></script>
     <!-- <script defer async src="siunusdev.counter.js?v=5"></script> -->
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
