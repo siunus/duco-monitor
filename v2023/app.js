@@ -217,6 +217,7 @@ setUsername = function (newUsername) {
   localStorage.setItem(DUCO_USERNAME, username);
   $("span.username").text(username);
   $("input.username").val(username);
+  $("input.refresh-interval").val(refreshInterval / 1000);
 };
 
 getUsername = function () {
@@ -1408,7 +1409,6 @@ checkTheme = function () {
 };
 
 getBMCRecentSupporters = function () {
-  // https://app.buymeacoffee.com/api/creators/slug/siunusdev/coffees?web=1&page=1&per_page=10
   $.ajax({
     method: "GET",
     url: `https://app.buymeacoffee.com/api/creators/slug/siunusdev/coffees?web=1&page=1&per_page=10`,
@@ -1424,40 +1424,6 @@ getBMCRecentSupporters = function () {
 
 setBMCRecentSupporters = function (data) {
   const listSupporters = $("#list-supporters");
-
-  /* data sample
-  {
-"id": 7088304,
-"support_id": 7088304,
-"fk_project_id": 1588825,
-"fk_user_id": 5803175,
-"profile_full_name": "revox from the Duino-Coin Team",
-"profile_picture_url": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png@300w_0e.webp",
-"profile_picture": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png",
-"default_profile_picture_url": "https://cdn.buymeacoffee.com/uploads/profile_pictures/2024/05/Y76SYFY0SiBlfBqQ.png@300w_0e.webp",
-"project_slug": "siunusdev",
-"project_tag_alternative": "coffee",
-"project_tag_emoji": "☕",
-"support_type": "Supporter",
-"support_message": "<span class=\"suppUsername\" ><a target=\"_blank\" rel=\"nofollow\" href=\"https://www.buymeacoffee.com/LmbBkzkQEZ\">revox from the Duino-Coin Team</a></span> bought 3 coffees.",
-"subscription_id": null,
-"comments": [],
-"support_coffees": 3,
-"support_visibility": 1,
-"support_created_on": "2024-05-29T19:56:51.000000Z",
-"support_updated_on": "2024-05-29T19:56:51.000000Z",
-"transfer_id": null,
-"supporter_name": "revox from the Duino-Coin Team",
-"msg_hidden": 0,
-"is_pinned": 0,
-"notification_id": 9727771,
-"supporter_role_is_creator": true,
-"widget_version": 1,
-"support_note": "There you go. Thanks for helping Duino!",
-"support_gif": null,
-"support_video": null
-},
-*/
 
   let listRows = "";
   data.forEach(function (supporter) {
